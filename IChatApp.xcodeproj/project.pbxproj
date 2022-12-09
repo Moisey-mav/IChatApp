@@ -45,6 +45,10 @@
 		949E7D332943643600FCB1CD /* InsertableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E7D322943643600FCB1CD /* InsertableTextField.swift */; };
 		949E7D3529436B1900FCB1CD /* UIView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E7D3429436B1900FCB1CD /* UIView + Extension.swift */; };
 		949E7D3729436F2200FCB1CD /* ChatRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E7D3629436F2200FCB1CD /* ChatRequestViewController.swift */; };
+		949E7D392943764400FCB1CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 949E7D382943764400FCB1CD /* GoogleService-Info.plist */; };
+		949E7D3C29437E6200FCB1CD /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 949E7D3B29437E6200FCB1CD /* FirebaseAnalytics */; };
+		949E7D3E29437E6200FCB1CD /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 949E7D3D29437E6200FCB1CD /* FirebaseAuth */; };
+		949E7D412943955B00FCB1CD /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E7D402943955B00FCB1CD /* AuthService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +92,8 @@
 		949E7D322943643600FCB1CD /* InsertableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertableTextField.swift; sourceTree = "<group>"; };
 		949E7D3429436B1900FCB1CD /* UIView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Extension.swift"; sourceTree = "<group>"; };
 		949E7D3629436F2200FCB1CD /* ChatRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestViewController.swift; sourceTree = "<group>"; };
+		949E7D382943764400FCB1CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		949E7D402943955B00FCB1CD /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +101,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				949E7D3C29437E6200FCB1CD /* FirebaseAnalytics in Frameworks */,
+				949E7D3E29437E6200FCB1CD /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +130,7 @@
 			children = (
 				9470345F2940D95500510CB1 /* AppDelegate.swift */,
 				947034612940D95500510CB1 /* SceneDelegate.swift */,
-				949E7D27294253B800FCB1CD /* Models */,
+				949E7D3F2943952400FCB1CD /* Services */,
 				949E7D05294207CD00FCB1CD /* Controllers */,
 				949E7D042942079D00FCB1CD /* SignIn&Auth */,
 				949E7D1B294240A200FCB1CD /* Protocols */,
@@ -133,6 +141,7 @@
 				947034682940D95700510CB1 /* Assets.xcassets */,
 				9470346A2940D95700510CB1 /* LaunchScreen.storyboard */,
 				9470346D2940D95700510CB1 /* Info.plist */,
+				949E7D382943764400FCB1CD /* GoogleService-Info.plist */,
 			);
 			path = IChatApp;
 			sourceTree = "<group>";
@@ -227,6 +236,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		949E7D3F2943952400FCB1CD /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				949E7D27294253B800FCB1CD /* Models */,
+				949E7D402943955B00FCB1CD /* AuthService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -243,6 +261,10 @@
 			dependencies = (
 			);
 			name = IChatApp;
+			packageProductDependencies = (
+				949E7D3B29437E6200FCB1CD /* FirebaseAnalytics */,
+				949E7D3D29437E6200FCB1CD /* FirebaseAuth */,
+			);
 			productName = IChatApp;
 			productReference = 9470345C2940D95500510CB1 /* IChatApp.app */;
 			productType = "com.apple.product-type.application";
@@ -271,6 +293,9 @@
 				Base,
 			);
 			mainGroup = 947034532940D95500510CB1;
+			packageReferences = (
+				949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 9470345D2940D95500510CB1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -290,6 +315,7 @@
 				9470346C2940D95700510CB1 /* LaunchScreen.storyboard in Resources */,
 				947034692940D95700510CB1 /* Assets.xcassets in Resources */,
 				949E7D1F294244BF00FCB1CD /* activeChats.json in Resources */,
+				949E7D392943764400FCB1CD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +357,7 @@
 				949E7D092942081000FCB1CD /* ListViewController.swift in Sources */,
 				949E7CFD29410C4400FCB1CD /* LoginViewController.swift in Sources */,
 				949E7CE92940DEED00FCB1CD /* UIButton + Extension.swift in Sources */,
+				949E7D412943955B00FCB1CD /* AuthService.swift in Sources */,
 				949E7D1A2942409300FCB1CD /* SelfConfigureCell.swift in Sources */,
 				949E7D07294207E700FCB1CD /* MainTabBarController.swift in Sources */,
 			);
@@ -540,6 +567,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		949E7D3B29437E6200FCB1CD /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		949E7D3D29437E6200FCB1CD /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 947034542940D95500510CB1 /* Project object */;
 }

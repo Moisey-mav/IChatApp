@@ -39,11 +39,33 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .white
         setupConstraint()
         setCustom()
+        setupButton()
     }
     
     private func setCustom() {
         googleButton.customizeGoogleButton()
     }
+    
+    private func setupButton() {
+        setupLoginButton()
+    }
+    
+    private func setupLoginButton() {
+        loginButton.addAction(UIAction(handler: { [weak self] _ in
+            AuthService.shared.login(email: self?.emailTextField.text!, password: self?.passwprdTextField.text!) { (result) in
+                switch result {
+                case .success(let user):
+                    self?.showAlert(with: "Успешно", and: "Вы авторизованны!")
+                case .failure(let error):
+                    self?.showAlert(with: "Ошибка", and: error.localizedDescription)
+                }
+            }
+        }), for: .touchUpInside)
+    }
+}
+
+// MARK: - Setup Constraint
+extension LoginViewController {
     
     private func setupConstraint() {
         let loginWithView = ButtonFromView(label: loginLabel, button: googleButton)
@@ -52,7 +74,6 @@ class LoginViewController: UIViewController {
         
         loginButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         let stackView = UIStackView(arrangedSubvews: [loginWithView, orLabel, emailStackView, passwordStackView, loginButton], axis: .vertical, spacing: 40)
-        
       
         let bottomStackView = UIStackView(arrangedSubvews: [needAnAccountLabel, signUpButton], axis: .horizontal, spacing: 10)
         bottomStackView.alignment = .firstBaseline
@@ -79,10 +100,7 @@ class LoginViewController: UIViewController {
             bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])
-        
     }
-    
-    
 }
 
 // MARK: - SwiftUI
