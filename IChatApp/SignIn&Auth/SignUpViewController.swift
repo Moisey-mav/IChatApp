@@ -37,7 +37,42 @@ class SignUpViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         setupConstraint()
+        setupButton()
     }
+    
+    private func setupButton() {
+        setupSignUpButton()
+    }
+    
+    private func setupSignUpButton() {
+        signUpButton.addAction(UIAction(handler: { [weak self] _ in
+            AuthService.shared.register(email: self?.emailTextField.text, password: self?.passwprdTextField.text, confirmPassword: self?.confirmPasswordTextField.text) { (result) in
+                switch result {
+                case .success(let user):
+                    self?.showAlert(with: "Успешно", and: "Вы зарегистрированны!")
+                    print(user.email)
+                case .failure(let error):
+                    self?.showAlert(with: "Ошибка", and: error.localizedDescription)
+                }
+            }
+        }), for: .touchUpInside)
+    }
+}
+
+extension UIViewController {
+    
+    func showAlert(with title: String, and message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    
+}
+
+// MARK: - Setup Constraint
+
+extension SignUpViewController {
     
     private func setupConstraint() {
         let emailStackView = UIStackView(arrangedSubvews: [emailLabel, emailTextField], axis: .vertical, spacing: 0)

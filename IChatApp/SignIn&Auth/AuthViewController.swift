@@ -28,11 +28,33 @@ class AuthViewController: UIViewController {
         view.backgroundColor = .white
         setupConstraints()
         setCustom()
+        setupButton()
     }
     
     private func setCustom() {
         googleButton.customizeGoogleButton()
     }
+    
+    private func setupButton() {
+        setupEmailButton()
+        setupLoginButton()
+    }
+    
+    private func setupEmailButton() {
+        emailButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.present(SignUpViewController(), animated: true)
+        }), for: .touchUpInside)
+    }
+    
+    private func setupLoginButton() {
+        loginButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.present(LoginViewController(), animated: true)
+        }), for: .touchUpInside)
+    }
+}
+
+// MARK: - Setup Constraint
+extension AuthViewController {
     
     private func setupConstraints() {
         let googleView = ButtonFromView(label: googleLabel, button: googleButton)
@@ -57,9 +79,7 @@ class AuthViewController: UIViewController {
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])
     }
-
 }
-
 
 // MARK: - SwiftUI
 
