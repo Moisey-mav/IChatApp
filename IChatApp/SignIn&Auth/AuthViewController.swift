@@ -9,7 +9,7 @@ import UIKit
 
 class AuthViewController: UIViewController {
     
-    private let logoImageView = UIImageView(image: UIImage(systemName: "home"), contentMode: .scaleAspectFit)
+    private let logoImageView = UIImageView(image: UIImage(named: "AppLogo"), contentMode: .scaleAspectFit)
     
     private let googleLabel = UILabel(text: "Get started with")
     private let emailLabel = UILabel(text: "Or sign up with")
@@ -44,13 +44,15 @@ class AuthViewController: UIViewController {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 160),
-            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.heightAnchor.constraint(equalToConstant: 100),
+            logoImageView.widthAnchor.constraint(equalToConstant: 100),
         ])
         
         view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 160),
+            stackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 50),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])
