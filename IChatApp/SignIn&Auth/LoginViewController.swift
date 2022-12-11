@@ -9,6 +9,13 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    private let containerView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 30
+        view.backgroundColor = .mainWhite()
+        return view
+    }()
+    
     private let welcomeLabel = UILabel(text: "Welcom back!", font: .avenir26())
     private let loginLabel = UILabel(text: "Login with")
     private let orLabel = UILabel(text: "or")
@@ -17,7 +24,7 @@ class LoginViewController: UIViewController {
     private let needAnAccountLabel = UILabel(text: "Need an account?")
 
     private let emailTextField = OneLineTextField(font: .avenir20())
-    private let passwprdTextField = OneLineTextField(font: .avenir20())
+    private let passwordTextField = OneLineTextField(font: .avenir20())
     
     private let googleButton = UIButton(title: "Google", titleColor: .black, backgroundColor: .white, isShadow: true)
     private let loginButton = UIButton(title: "Login", titleColor: .white, backgroundColor: .buttonDark())
@@ -30,15 +37,22 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    weak var delegate: AuthNavigationDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        view.applyGradients(cornerRadius: 0)
+    }
+    
     private func setupUI() {
-        view.backgroundColor = .white
         setupConstraint()
         setCustom()
+        costomizeElement()
         setupButton()
     }
     
@@ -46,21 +60,44 @@ class LoginViewController: UIViewController {
         googleButton.customizeGoogleButton()
     }
     
-    private func setupButton() {
-        setupLoginButton()
+    private func costomizeElement() {
+        welcomeLabel.textColor = .white
+        orLabel.textAlignment = .center
     }
     
-    private func setupLoginButton() {
-        loginButton.addAction(UIAction(handler: { [weak self] _ in
-            AuthService.shared.login(email: self?.emailTextField.text!, password: self?.passwprdTextField.text!) { (result) in
+    private func setupButton() {
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func loginButtonTapped() {
+        AuthService.shared.login(
+            email: emailTextField.text!,
+            password: passwordTextField.text!) { (result) in
                 switch result {
                 case .success(let user):
-                    self?.showAlert(with: "Успешно", and: "Вы авторизованны!")
+                    self.showAlert(with: "Успешно!", and: "Вы авторизованы!") {
+                        FirestoreService.shared.getUserData(user: user) { (result) in
+                            switch result {
+                            case .success(let muser):
+                                let mainTabBar = MainTabBarController(currentUser: muser)
+                                mainTabBar.modalPresentationStyle = .fullScreen
+                                self.present(mainTabBar, animated: true, completion: nil)
+                            case .failure(let error):
+                                self.present(SetupProfileViewController(currentUser: user), animated: true, completion: nil)
+                            }
+                        }
+                    }
                 case .failure(let error):
-                    self?.showAlert(with: "Ошибка", and: error.localizedDescription)
+                    self.showAlert(with: "Ошибка!", and: error.localizedDescription)
                 }
-            }
-        }), for: .touchUpInside)
+        }
+    }
+    
+    @objc private func signUpButtonTapped() {
+        dismiss(animated: true) {
+            self.delegate?.toSignUpVC()
+        }
     }
 }
 
@@ -70,10 +107,12 @@ extension LoginViewController {
     private func setupConstraint() {
         let loginWithView = ButtonFromView(label: loginLabel, button: googleButton)
         let emailStackView = UIStackView(arrangedSubvews: [emailLabel, emailTextField], axis: .vertical, spacing: 0)
-        let passwordStackView = UIStackView(arrangedSubvews: [passwordLabel, passwprdTextField], axis: .vertical, spacing: 0)
+        let passwordStackView = UIStackView(arrangedSubvews: [passwordLabel, passwordTextField], axis: .vertical, spacing: 0)
         
         loginButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        let stackView = UIStackView(arrangedSubvews: [loginWithView, orLabel, emailStackView, passwordStackView, loginButton], axis: .vertical, spacing: 40)
+        let stackView = UIStackView(arrangedSubvews: [loginWithView, emailStackView, passwordStackView, loginButton], axis: .vertical, spacing: 40)
+        
+        let googleStackView = UIStackView(arrangedSubvews: [orLabel, loginWithView], axis: .vertical, spacing: 10)
       
         let bottomStackView = UIStackView(arrangedSubvews: [needAnAccountLabel, signUpButton], axis: .horizontal, spacing: 10)
         bottomStackView.alignment = .firstBaseline
@@ -85,20 +124,37 @@ extension LoginViewController {
             welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
-        view.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(containerView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 80),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
+            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            containerView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -200)
         ])
         
-        view.addSubview(bottomStackView)
+        containerView.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 40),
+            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 40),
+            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -40)
+        ])
+
+        containerView.addSubview(googleStackView)
+        googleStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            googleStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
+            googleStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 40),
+            googleStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -40)
+        ])
+        
+        containerView.addSubview(bottomStackView)
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            bottomStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 60),
-            bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-            bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
+            bottomStackView.topAnchor.constraint(equalTo: googleStackView.bottomAnchor, constant: 20),
+            bottomStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 40),
+            bottomStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -40)
         ])
     }
 }
