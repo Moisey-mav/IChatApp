@@ -9,6 +9,13 @@ import UIKit
 
 class SignUpViewController: UIViewController {
     
+    private let containerView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 30
+        view.backgroundColor = .mainWhite()
+        return view
+    }()
+    
     private let welcomeLabel = UILabel(text: "Good to see you!", font: .avenir26())
     private let emailLabel = UILabel(text: "Email")
     private let passwprdLabel = UILabel(text: "Password")
@@ -16,7 +23,7 @@ class SignUpViewController: UIViewController {
     private let alreadyOnboardLabel = UILabel(text: "Already onboard?")
     
     private let emailTextField = OneLineTextField(font: .avenir20())
-    private let passwprdTextField = OneLineTextField(font: .avenir20())
+    private let passwordTextField = OneLineTextField(font: .avenir20())
     private let confirmPasswordTextField = OneLineTextField(font: .avenir20())
     
     private let signUpButton = UIButton(title: "Sing Up", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
@@ -29,41 +36,59 @@ class SignUpViewController: UIViewController {
         return button
     }()
     
+    weak var delegate: AuthNavigationDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        view.applyGradients(cornerRadius: 0)
+    }
+    
     private func setupUI() {
-        view.backgroundColor = .white
         setupConstraint()
         setupButton()
     }
     
     private func setupButton() {
-        setupSignUpButton()
+        signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
     }
     
-    private func setupSignUpButton() {
-        signUpButton.addAction(UIAction(handler: { [weak self] _ in
-            AuthService.shared.register(email: self?.emailTextField.text, password: self?.passwprdTextField.text, confirmPassword: self?.confirmPasswordTextField.text) { (result) in
+    @objc private func signUpButtonTapped() {
+        AuthService.shared.register(
+            email: emailTextField.text,
+            password: passwordTextField.text,
+            confirmPassword: confirmPasswordTextField.text) { (result) in
                 switch result {
                 case .success(let user):
-                    self?.showAlert(with: "Успешно", and: "Вы зарегистрированны!")
-                    print(user.email)
+                    self.showAlert(with: "Успешно!", and: "Вы зарегистрированны!") {
+                        self.present(SetupProfileViewController(currentUser: user), animated: true, completion: nil)
+                    }
+                    
                 case .failure(let error):
-                    self?.showAlert(with: "Ошибка", and: error.localizedDescription)
+                    self.showAlert(with: "Ошибка!", and: error.localizedDescription)
                 }
-            }
-        }), for: .touchUpInside)
+        }
+    }
+    
+    @objc private func loginButtonTapped() {
+        self.dismiss(animated: true) {
+            self.delegate?.toLoginVC()
+        }
     }
 }
 
 extension UIViewController {
     
-    func showAlert(with title: String, and message: String) {
+    func showAlert(with title: String, and message: String, completion: @escaping () -> Void = { }) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+            completion()
+        }
         alertController.addAction(okAction)
         present(alertController, animated: true)
     }
@@ -76,7 +101,7 @@ extension SignUpViewController {
     
     private func setupConstraint() {
         let emailStackView = UIStackView(arrangedSubvews: [emailLabel, emailTextField], axis: .vertical, spacing: 0)
-        let passwordStackView = UIStackView(arrangedSubvews: [passwprdLabel, passwprdTextField], axis: .vertical, spacing: 0)
+        let passwordStackView = UIStackView(arrangedSubvews: [passwprdLabel, passwordTextField], axis: .vertical, spacing: 0)
         let confirmPasswordStackView = UIStackView(arrangedSubvews: [confirmPasswordLabel, confirmPasswordTextField], axis: .vertical, spacing: 0)
         
         signUpButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -86,23 +111,32 @@ extension SignUpViewController {
         view.addSubview(welcomeLabel)
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            welcomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            welcomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
             welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
-        view.addSubview(stackView)
+        view.addSubview(containerView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            containerView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -200)
+        ])
+        
+        containerView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 100),
+            stackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 40),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])
         
-        view.addSubview(bottomStackView)
+        containerView.addSubview(bottomStackView)
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
         bottomStackView.alignment = .firstBaseline
         NSLayoutConstraint.activate([
-            bottomStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 60),
+            bottomStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
             bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])

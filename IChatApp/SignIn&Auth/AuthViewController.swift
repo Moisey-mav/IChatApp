@@ -18,6 +18,9 @@ class AuthViewController: UIViewController {
     private let googleButton = UIButton(title: "Google", titleColor: .black, backgroundColor: .white, isShadow: true)
     private let emailButton = UIButton(title: "Email", titleColor: .white, backgroundColor: .buttonDark())
     private let loginButton = UIButton(title: "Login", titleColor: .buttonRed(), backgroundColor: .white, isShadow: true)
+    
+    private let signUpVC = SignUpViewController()
+    private let loginVC = LoginViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,20 +39,18 @@ class AuthViewController: UIViewController {
     }
     
     private func setupButton() {
-        setupEmailButton()
-        setupLoginButton()
+        emailButton.addTarget(self, action: #selector(emailButtonTapped), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        signUpVC.delegate = self
+        loginVC.delegate = self
     }
     
-    private func setupEmailButton() {
-        emailButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.present(SignUpViewController(), animated: true)
-        }), for: .touchUpInside)
+    @objc private func emailButtonTapped() {
+        present(signUpVC, animated: true, completion: nil)
     }
     
-    private func setupLoginButton() {
-        loginButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.present(LoginViewController(), animated: true)
-        }), for: .touchUpInside)
+    @objc private func loginButtonTapped() {
+        present(loginVC, animated: true, completion: nil)
     }
 }
 
@@ -65,7 +66,7 @@ extension AuthViewController {
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 160),
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 100),
             logoImageView.widthAnchor.constraint(equalToConstant: 100),
@@ -74,10 +75,20 @@ extension AuthViewController {
         view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 50),
+            stackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 100),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])
+    }
+}
+
+extension AuthViewController: AuthNavigationDelegate {
+    func toLoginVC() {
+        present(loginVC, animated: true)
+    }
+    
+    func toSignUpVC() {
+        present(signUpVC, animated: true)
     }
 }
 

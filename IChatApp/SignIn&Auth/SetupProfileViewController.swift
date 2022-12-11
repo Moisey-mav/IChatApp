@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SetupProfileViewController: UIViewController {
     
     private let welcomeLabel = UILabel(text: "Set up profile!", font: .avenir26())
-    private let fullNameLabel = UILabel(text: "Full name")
-    private let aboutMeLabel = UILabel(text: "About me")
-    private let sexLabel = UILabel(text: "Sex")
+    private let fullNameLabel = UILabel(text: "Full name *")
+    private let aboutMeLabel = UILabel(text: "About me *")
+    private let sexLabel = UILabel(text: "Sex *")
     
     private let fullNameTextField = OneLineTextField(font: .avenir20())
     private let aboutMeTextField = OneLineTextField(font: .avenir20())
@@ -22,6 +23,16 @@ class SetupProfileViewController: UIViewController {
     private let goToChatsButton = UIButton(title: "Go to chats!", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
     
     private let fillImageView = AddPhotoView()
+    private let currentUser: User
+    
+    init(currentUser: User) {
+        self.currentUser = currentUser
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +42,26 @@ class SetupProfileViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         setupConstraints()
+        setupButton()
+    }
+    
+    private func setupButton() {
+        goToChatsButton.addTarget(self, action: #selector(goToChatsButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func goToChatsButtonTapped() {
+        FirestoreService.shared.saveProfileWith( id: currentUser.uid, email: currentUser.email!, username: fullNameTextField.text, avatarImageString: "nil", description: aboutMeTextField.text, sex: sexSegmentedControl.titleForSegment(at: sexSegmentedControl.selectedSegmentIndex)) { (result) in
+                switch result {
+                case .success(let muser):
+                    self.showAlert(with: "Успешно!", and: "Данные сохранены!", completion: {
+                        let mainTabBar = MainTabBarController(currentUser: muser)
+                        mainTabBar.modalPresentationStyle = .fullScreen
+                        self.present(mainTabBar, animated: true, completion: nil)
+                    })
+                case .failure(let error):
+                    self.showAlert(with: "Ошибка!", and: error.localizedDescription)
+                }
+        }
     }
     
     private func setupConstraints() {
@@ -75,7 +106,7 @@ struct SetupProfileViewControllerProvider: PreviewProvider {
     }
     
     struct ContainerView: UIViewControllerRepresentable {
-        let profileVC = SetupProfileViewController()
+        let profileVC = SetupProfileViewController(currentUser: Auth.auth().currentUser!)
         
         func makeUIViewController(context: UIViewControllerRepresentableContext<SetupProfileViewControllerProvider.ContainerView>) -> UIViewController {
             return profileVC
