@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 class AuthViewController: UIViewController {
     
@@ -91,6 +92,8 @@ extension AuthViewController: AuthNavigationDelegate {
         present(signUpVC, animated: true)
     }
 }
+
+//extension AuthViewController: GIDSignInDe
 
 // MARK: - SwiftUI
 

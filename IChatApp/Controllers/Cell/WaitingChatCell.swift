@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Nuke
+import NukeExtensions
 
 class WaitingChatCell: UICollectionViewCell, SelfConfigureCell {
     
@@ -21,7 +23,10 @@ class WaitingChatCell: UICollectionViewCell, SelfConfigureCell {
     
     func configure<U>(with value: U) where U : Hashable {
         guard let chat: MChat = value as? MChat else { return }
-        friendImageView.image = UIImage(named: chat.userImageString)
+        guard let url = URL(string: chat.friendAvatarStringURL) else { return }
+        let nukeRequest = Nuke.ImageRequest(url: url)
+        let options = ImageLoadingOptions(placeholder: UIImage(), transition: .fadeIn(duration: 0.5))
+        loadImage(with: nukeRequest, options: options, into: friendImageView, completion: nil)
     }
     
     private func configureCell() {
@@ -50,6 +55,7 @@ class WaitingChatCell: UICollectionViewCell, SelfConfigureCell {
 // MARK: - SwiftUI
 
 import SwiftUI
+import NukeExtensions
 
 struct WaitingChatProvider: PreviewProvider {
     static var previews: some View {

@@ -82,25 +82,3 @@ extension InsertableTextField {
     }
     
 }
-
-// MARK: - SwiftUI
-
-import SwiftUI
-
-struct InsertableTextFieldProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let viewController = ProfileViewController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<InsertableTextFieldProvider.ContainerView>) -> UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: InsertableTextFieldProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<InsertableTextFieldProvider.ContainerView>) {
-            
-        }
-    }
-}

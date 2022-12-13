@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Nuke
+import NukeExtensions
 
 class ActiveChatCell: UICollectionViewCell, SelfConfigureCell {
    
@@ -24,9 +26,12 @@ class ActiveChatCell: UICollectionViewCell, SelfConfigureCell {
     
     func configure<U>(with value: U) where U : Hashable {
         guard let chat: MChat = value as? MChat else { return }
-        friendImageView.image = UIImage(named: chat.userImageString)
-        friendName.text = chat.username
-        lastMessage.text = chat.lastMessage
+        guard let url = URL(string: chat.friendAvatarStringURL) else { return }
+        friendName.text = chat.friendUsername
+        lastMessage.text = chat.lastMessageContent
+        loadImage(with: Nuke.ImageRequest(url: url),
+                  options: ImageLoadingOptions(placeholder: UIImage(), transition: .fadeIn(duration: 0.5)),
+                  into: friendImageView, completion: nil)
     }
     
     private func configureCell() {

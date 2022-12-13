@@ -9,7 +9,7 @@ import UIKit
 
 class AddPhotoView: UIView {
     
-    private var circleImageView: UIImageView = {
+    var circleImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "face.smiling")
         imageView.tintColor = .black
@@ -20,7 +20,7 @@ class AddPhotoView: UIView {
         return imageView
     }()
     
-    private var plusButton: UIButton = {
+    var plusButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "Plus"), for: .normal)
         button.tintColor = .buttonDark()

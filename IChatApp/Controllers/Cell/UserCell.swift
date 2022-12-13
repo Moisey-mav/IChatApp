@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Nuke
+import NukeExtensions
 
 class UserCell: UICollectionViewCell, SelfConfigureCell {
     static var identifier = "UserCell"
@@ -68,9 +70,17 @@ class UserCell: UICollectionViewCell, SelfConfigureCell {
         ])
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        userImageView.image = nil
+    }
+    
     func configure<U>(with value: U) where U : Hashable {
         guard let user: MUser = value as? MUser else { return }
-        userImageView.image = UIImage(named: user.avatarStringURL)
+        guard let url = URL(string: user.avatarStringURL) else { return }
+        let nukeRequest = Nuke.ImageRequest(url: url)
+        let options = ImageLoadingOptions(placeholder: UIImage(), transition: .fadeIn(duration: 0.5))
+        loadImage(with: nukeRequest, options: options, into: userImageView, completion: nil)
         userName.text = user.username
     }
     

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Nuke
+import NukeExtensions
 
 class ChatRequestViewController: UIViewController {
     
@@ -15,7 +17,23 @@ class ChatRequestViewController: UIViewController {
     private let aboutMeLabel = UILabel(text: "You have the opportunity to start a new chat", font: .systemFont(ofSize: 16, weight: .light))
     private let acceptButton = UIButton(title: "ACCEPT", font: .laoSangamMN20(), titleColor: .white, backgroundColor: .black, cornerRadius: 10, isShadow: false)
     private let denyButton = UIButton(title: "Deny", font: .laoSangamMN20(), titleColor: #colorLiteral(red: 0.8352941176, green: 0.2, blue: 0.2, alpha: 1), backgroundColor: .clear, cornerRadius: 10, isShadow: false)
-
+    
+    weak var delegate: WaitingChatsNavigation?
+    
+    private var chat: MChat
+    
+    init(chat: MChat) {
+        self.chat = chat
+        nameLabel.text = chat.friendUsername
+        loadImage(with: Nuke.ImageRequest(url: URL(string: chat.friendAvatarStringURL)),
+                  options: ImageLoadingOptions(placeholder: UIImage(), transition: .fadeIn(duration: 0.5)),
+                  into: imageView, completion: nil)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +48,7 @@ class ChatRequestViewController: UIViewController {
     private func setupUI() {
         customizeElement()
         setupConstraint()
+        setupButton()
     }
     
     private func customizeElement() {
@@ -38,6 +57,23 @@ class ChatRequestViewController: UIViewController {
         
         containerView.backgroundColor = .mainWhite()
         containerView.layer.cornerRadius = 30
+    }
+    
+    private func setupButton() {
+        denyButton.addTarget(self, action: #selector(denyButtonTapped), for: .touchUpInside)
+        acceptButton.addTarget(self, action: #selector(acceptButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func denyButtonTapped() {
+        self.dismiss(animated: true) {
+            self.delegate?.remoweWaitingChat(chat: self.chat)
+        }
+    }
+    
+    @objc private func acceptButtonTapped() {
+        self.dismiss(animated: true) {
+            self.delegate?.changeToActive(chat: self.chat)
+        }
     }
 }
 
@@ -90,27 +126,5 @@ extension ChatRequestViewController {
             buttonsStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -24),
             buttonsStackView.heightAnchor.constraint(equalToConstant: 56)
         ])
-    }
-}
-
-// MARK: - SwiftUI
-
-import SwiftUI
-
-struct ChatRequestViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let viewController = ChatRequestViewController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<ChatRequestViewControllerProvider.ContainerView>) -> UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: ChatRequestViewControllerProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<ChatRequestViewControllerProvider.ContainerView>) {
-            
-        }
     }
 }

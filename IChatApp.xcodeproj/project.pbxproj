@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		940FD642294764460042B75F /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 940FD641294764460042B75F /* FirebaseStorage */; };
+		940FD6442947651B0042B75F /* UIImage + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940FD6432947651B0042B75F /* UIImage + Extension.swift */; };
+		940FD646294774AC0042B75F /* ListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940FD645294774AC0042B75F /* ListenerService.swift */; };
+		940FD64929477C6E0042B75F /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 940FD64829477C6E0042B75F /* Nuke */; };
+		940FD64B29477FAC0042B75F /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 940FD64A29477FAC0042B75F /* NukeExtensions */; };
+		940FD64D294795770042B75F /* MMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940FD64C294795770042B75F /* MMessage.swift */; };
+		940FD64F2947B2950042B75F /* WaitingChatsNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940FD64E2947B2950042B75F /* WaitingChatsNavigation.swift */; };
+		940FD6542948B5AC0042B75F /* ChatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940FD6532948B5AC0042B75F /* ChatsViewController.swift */; };
 		9453EF5C2944982E00A490A6 /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9453EF5B2944982E00A490A6 /* Validators.swift */; };
 		9453EF5E29449A6400A490A6 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9453EF5D29449A6400A490A6 /* AuthError.swift */; };
 		9453EF612944BAAE00A490A6 /* AuthNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9453EF602944BAAE00A490A6 /* AuthNavigationDelegate.swift */; };
@@ -55,9 +63,16 @@
 		94B4A28A29461AE00051AE96 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B4A28929461AE00051AE96 /* FirestoreService.swift */; };
 		94B4A28D29461B280051AE96 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 94B4A28C29461B280051AE96 /* FirebaseFirestore */; };
 		94B4A28F29461D830051AE96 /* UserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B4A28E29461D830051AE96 /* UserError.swift */; };
+		94F4CAF429464F7D00C6C810 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 94F4CAF329464F7D00C6C810 /* GoogleSignIn */; };
+		94F4CAFA294655B200C6C810 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4CAF9294655B200C6C810 /* StorageService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		940FD6432947651B0042B75F /* UIImage + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Extension.swift"; sourceTree = "<group>"; };
+		940FD645294774AC0042B75F /* ListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerService.swift; sourceTree = "<group>"; };
+		940FD64C294795770042B75F /* MMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMessage.swift; sourceTree = "<group>"; };
+		940FD64E2947B2950042B75F /* WaitingChatsNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingChatsNavigation.swift; sourceTree = "<group>"; };
+		940FD6532948B5AC0042B75F /* ChatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsViewController.swift; sourceTree = "<group>"; };
 		9453EF5B2944982E00A490A6 /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
 		9453EF5D29449A6400A490A6 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		9453EF602944BAAE00A490A6 /* AuthNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigationDelegate.swift; sourceTree = "<group>"; };
@@ -105,6 +120,7 @@
 		949E7D402943955B00FCB1CD /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		94B4A28929461AE00051AE96 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		94B4A28E29461D830051AE96 /* UserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserError.swift; sourceTree = "<group>"; };
+		94F4CAF9294655B200C6C810 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,7 +129,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				949E7D3C29437E6200FCB1CD /* FirebaseAnalytics in Frameworks */,
+				94F4CAF429464F7D00C6C810 /* GoogleSignIn in Frameworks */,
+				940FD64B29477FAC0042B75F /* NukeExtensions in Frameworks */,
 				949E7D3E29437E6200FCB1CD /* FirebaseAuth in Frameworks */,
+				940FD64929477C6E0042B75F /* Nuke in Frameworks */,
+				940FD642294764460042B75F /* FirebaseStorage in Frameworks */,
 				94B4A28D29461B280051AE96 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -196,6 +216,7 @@
 				949E7CF62940FEFA00FCB1CD /* UIStackView + Extension.swift */,
 				949E7D0229411EA000FCB1CD /* UISegmentedControl + Extension.swift */,
 				949E7D3429436B1900FCB1CD /* UIView + Extension.swift */,
+				940FD6432947651B0042B75F /* UIImage + Extension.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -219,6 +240,7 @@
 				949E7D0A2942082600FCB1CD /* PeopleViewController.swift */,
 				949E7D302942C16800FCB1CD /* ProfileViewController.swift */,
 				949E7D3629436F2200FCB1CD /* ChatRequestViewController.swift */,
+				940FD6532948B5AC0042B75F /* ChatsViewController.swift */,
 				949E7D122942231000FCB1CD /* Cell */,
 				949E7D22294252E500FCB1CD /* Header */,
 			);
@@ -240,6 +262,7 @@
 			children = (
 				949E7D192942409300FCB1CD /* SelfConfigureCell.swift */,
 				9453EF602944BAAE00A490A6 /* AuthNavigationDelegate.swift */,
+				940FD64E2947B2950042B75F /* WaitingChatsNavigation.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -257,6 +280,7 @@
 			children = (
 				949E7D232942537100FCB1CD /* MUser.swift */,
 				949E7D252942537C00FCB1CD /* MChat.swift */,
+				940FD64C294795770042B75F /* MMessage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -267,6 +291,8 @@
 				949E7D27294253B800FCB1CD /* Models */,
 				949E7D402943955B00FCB1CD /* AuthService.swift */,
 				94B4A28929461AE00051AE96 /* FirestoreService.swift */,
+				94F4CAF9294655B200C6C810 /* StorageService.swift */,
+				940FD645294774AC0042B75F /* ListenerService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -298,6 +324,10 @@
 				949E7D3B29437E6200FCB1CD /* FirebaseAnalytics */,
 				949E7D3D29437E6200FCB1CD /* FirebaseAuth */,
 				94B4A28C29461B280051AE96 /* FirebaseFirestore */,
+				94F4CAF329464F7D00C6C810 /* GoogleSignIn */,
+				940FD641294764460042B75F /* FirebaseStorage */,
+				940FD64829477C6E0042B75F /* Nuke */,
+				940FD64A29477FAC0042B75F /* NukeExtensions */,
 			);
 			productName = IChatApp;
 			productReference = 9470345C2940D95500510CB1 /* IChatApp.app */;
@@ -329,6 +359,8 @@
 			mainGroup = 947034532940D95500510CB1;
 			packageReferences = (
 				949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				94F4CAF229464F7C00C6C810 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				940FD64729477C6E0042B75F /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			productRefGroup = 9470345D2940D95500510CB1 /* Products */;
 			projectDirPath = "";
@@ -365,8 +397,12 @@
 				949E7D1629422DA900FCB1CD /* GadientView.swift in Sources */,
 				949E7D212942465500FCB1CD /* SectionHeader.swift in Sources */,
 				949E7CF92941009F00FCB1CD /* SignUpViewController.swift in Sources */,
+				940FD646294774AC0042B75F /* ListenerService.swift in Sources */,
+				94F4CAFA294655B200C6C810 /* StorageService.swift in Sources */,
+				940FD6542948B5AC0042B75F /* ChatsViewController.swift in Sources */,
 				949E7D0329411EA000FCB1CD /* UISegmentedControl + Extension.swift in Sources */,
 				9453EF5E29449A6400A490A6 /* AuthError.swift in Sources */,
+				940FD64F2947B2950042B75F /* WaitingChatsNavigation.swift in Sources */,
 				949E7CEB2940E11000FCB1CD /* UIFont + Extension.swift in Sources */,
 				949E7D242942537100FCB1CD /* MUser.swift in Sources */,
 				9453EF5C2944982E00A490A6 /* Validators.swift in Sources */,
@@ -386,11 +422,13 @@
 				94B4A28F29461D830051AE96 /* UserError.swift in Sources */,
 				949E7CEF2940E45100FCB1CD /* UILabel + Extension.swift in Sources */,
 				949E7CF52940EC0500FCB1CD /* ButtonFromView.swift in Sources */,
+				940FD64D294795770042B75F /* MMessage.swift in Sources */,
 				949E7D3529436B1900FCB1CD /* UIView + Extension.swift in Sources */,
 				949E7CF12940EAB300FCB1CD /* UIImageView + Extension.swift in Sources */,
 				949E7CED2940E20A00FCB1CD /* UIColor + Extension.swift in Sources */,
 				949E7D2D2942B50700FCB1CD /* UserCell.swift in Sources */,
 				949E7D2F2942B68600FCB1CD /* UIViewController + Extension.swift in Sources */,
+				940FD6442947651B0042B75F /* UIImage + Extension.swift in Sources */,
 				949E7D182942343A00FCB1CD /* WaitingChatCell.swift in Sources */,
 				947034622940D95500510CB1 /* SceneDelegate.swift in Sources */,
 				949E7D092942081000FCB1CD /* ListViewController.swift in Sources */,
@@ -608,6 +646,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		940FD64729477C6E0042B75F /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -616,9 +662,32 @@
 				kind = branch;
 			};
 		};
+		94F4CAF229464F7C00C6C810 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = exactVersion;
+				version = 6.2.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		940FD641294764460042B75F /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		940FD64829477C6E0042B75F /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 940FD64729477C6E0042B75F /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		940FD64A29477FAC0042B75F /* NukeExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 940FD64729477C6E0042B75F /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeExtensions;
+		};
 		949E7D3B29437E6200FCB1CD /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -633,6 +702,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		94F4CAF329464F7D00C6C810 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94F4CAF229464F7C00C6C810 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
