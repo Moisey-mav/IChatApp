@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseAuth
 
 class FirestoreService {
-    
+
     static let shared = FirestoreService()
     
     let db = Firestore.firestore()
