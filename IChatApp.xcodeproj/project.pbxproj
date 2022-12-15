@@ -63,6 +63,9 @@
 		94B4A28A29461AE00051AE96 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B4A28929461AE00051AE96 /* FirestoreService.swift */; };
 		94B4A28D29461B280051AE96 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 94B4A28C29461B280051AE96 /* FirebaseFirestore */; };
 		94B4A28F29461D830051AE96 /* UserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B4A28E29461D830051AE96 /* UserError.swift */; };
+		94F2667629494F9900576519 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 94F2667529494F9900576519 /* MessageKit */; };
+		94F2667C2949FF6900576519 /* InputBarAccessoryView in Frameworks */ = {isa = PBXBuildFile; productRef = 94F2667B2949FF6900576519 /* InputBarAccessoryView */; };
+		94F2667E294A209A00576519 /* UIScrollView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F2667D294A209A00576519 /* UIScrollView + Extension.swift */; };
 		94F4CAF429464F7D00C6C810 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 94F4CAF329464F7D00C6C810 /* GoogleSignIn */; };
 		94F4CAFA294655B200C6C810 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4CAF9294655B200C6C810 /* StorageService.swift */; };
 /* End PBXBuildFile section */
@@ -120,6 +123,7 @@
 		949E7D402943955B00FCB1CD /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		94B4A28929461AE00051AE96 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		94B4A28E29461D830051AE96 /* UserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserError.swift; sourceTree = "<group>"; };
+		94F2667D294A209A00576519 /* UIScrollView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView + Extension.swift"; sourceTree = "<group>"; };
 		94F4CAF9294655B200C6C810 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,11 +134,13 @@
 			files = (
 				949E7D3C29437E6200FCB1CD /* FirebaseAnalytics in Frameworks */,
 				94F4CAF429464F7D00C6C810 /* GoogleSignIn in Frameworks */,
+				94F2667C2949FF6900576519 /* InputBarAccessoryView in Frameworks */,
 				940FD64B29477FAC0042B75F /* NukeExtensions in Frameworks */,
 				949E7D3E29437E6200FCB1CD /* FirebaseAuth in Frameworks */,
 				940FD64929477C6E0042B75F /* Nuke in Frameworks */,
 				940FD642294764460042B75F /* FirebaseStorage in Frameworks */,
 				94B4A28D29461B280051AE96 /* FirebaseFirestore in Frameworks */,
+				94F2667629494F9900576519 /* MessageKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +223,7 @@
 				949E7D0229411EA000FCB1CD /* UISegmentedControl + Extension.swift */,
 				949E7D3429436B1900FCB1CD /* UIView + Extension.swift */,
 				940FD6432947651B0042B75F /* UIImage + Extension.swift */,
+				94F2667D294A209A00576519 /* UIScrollView + Extension.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -328,6 +335,8 @@
 				940FD641294764460042B75F /* FirebaseStorage */,
 				940FD64829477C6E0042B75F /* Nuke */,
 				940FD64A29477FAC0042B75F /* NukeExtensions */,
+				94F2667529494F9900576519 /* MessageKit */,
+				94F2667B2949FF6900576519 /* InputBarAccessoryView */,
 			);
 			productName = IChatApp;
 			productReference = 9470345C2940D95500510CB1 /* IChatApp.app */;
@@ -361,6 +370,8 @@
 				949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				94F4CAF229464F7C00C6C810 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				940FD64729477C6E0042B75F /* XCRemoteSwiftPackageReference "Nuke" */,
+				94F2667429494F9800576519 /* XCRemoteSwiftPackageReference "MessageKit" */,
+				94F2667A2949FF6900576519 /* XCRemoteSwiftPackageReference "InputBarAccessoryView" */,
 			);
 			productRefGroup = 9470345D2940D95500510CB1 /* Products */;
 			projectDirPath = "";
@@ -409,6 +420,7 @@
 				949E7D142942233000FCB1CD /* ActiveChatCell.swift in Sources */,
 				947034642940D95500510CB1 /* AuthViewController.swift in Sources */,
 				949E7D332943643600FCB1CD /* InsertableTextField.swift in Sources */,
+				94F2667E294A209A00576519 /* UIScrollView + Extension.swift in Sources */,
 				949E7D0B2942082600FCB1CD /* PeopleViewController.swift in Sources */,
 				949E7CFF2941120300FCB1CD /* SetupProfileViewController.swift in Sources */,
 				94B4A28A29461AE00051AE96 /* FirestoreService.swift in Sources */,
@@ -662,6 +674,23 @@
 				kind = branch;
 			};
 		};
+		94F2667429494F9800576519 /* XCRemoteSwiftPackageReference "MessageKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MessageKit/MessageKit";
+			requirement = {
+				kind = exactVersion;
+				version = 3.8.0;
+			};
+		};
+		94F2667A2949FF6900576519 /* XCRemoteSwiftPackageReference "InputBarAccessoryView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nathantannar4/InputBarAccessoryView.git";
+			requirement = {
+				kind = versionRange;
+				maximumVersion = 6.0.0;
+				minimumVersion = 5.5.0;
+			};
+		};
 		94F4CAF229464F7C00C6C810 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -702,6 +731,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 949E7D3A29437E6200FCB1CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		94F2667529494F9900576519 /* MessageKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94F2667429494F9800576519 /* XCRemoteSwiftPackageReference "MessageKit" */;
+			productName = MessageKit;
+		};
+		94F2667B2949FF6900576519 /* InputBarAccessoryView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94F2667A2949FF6900576519 /* XCRemoteSwiftPackageReference "InputBarAccessoryView" */;
+			productName = InputBarAccessoryView;
 		};
 		94F4CAF329464F7D00C6C810 /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;

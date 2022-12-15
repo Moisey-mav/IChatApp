@@ -192,4 +192,30 @@ class FirestoreService {
             }
         }
     }
+    
+    func sendMessage(chat: MChat, message: MMessage, completion: @escaping(Result<Void, Error>) -> Void) {
+        let friendRef = usersRef.document(chat.friendId).collection("activeChats").document(currentUser.id)
+        let friendMessageRef = friendRef.collection("messages")
+        let myMessegeRef = usersRef.document(currentUser.id).collection("activeChats").document(chat.friendId).collection("messages")
+        let chatForFriend = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringURL, friendId: currentUser.id, lastMessageContent: message.content)
+        friendRef.setData(chatForFriend.representation) { (error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            friendMessageRef.addDocument(data: message.representation) { (error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                myMessegeRef.addDocument(data: message.representation) { (error) in
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+                    completion(.success(Void()))
+                }
+            }
+        }
+    }
 }
