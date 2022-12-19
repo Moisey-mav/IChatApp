@@ -15,17 +15,10 @@ class FirestoreService {
     
     let db = Firestore.firestore()
     
-    private var usersRef: CollectionReference {
-        return db.collection("users")
-    }
+    private var usersRef: CollectionReference { return db.collection("users") }
     
-    private var waitingChatsRef: CollectionReference {
-        return db.collection(["users", currentUser.id, "waitingChats"].joined(separator: "/"))
-    }
-    
-    private var activeChatsRef: CollectionReference {
-        return db.collection(["users", currentUser.id, "activeChats"].joined(separator: "/"))
-    }
+    private var waitingChatsRef: CollectionReference { return db.collection(["users", currentUser.id, "waitingChats"].joined(separator: "/")) }
+    private var activeChatsRef: CollectionReference { return db.collection(["users", currentUser.id, "activeChats"].joined(separator: "/")) }
     
     var currentUser: MUser!
     
@@ -45,9 +38,9 @@ class FirestoreService {
         }
     }
     
-    func saveProfileWith(id: String, email: String, username: String?, avatarImage: UIImage?, description: String?, sex: String?, completion: @escaping (Result<MUser, Error>) -> Void) {
+    func saveProfileWith(id: String, email: String, firstName: String?, secondName: String?, avatarImage: UIImage?, description: String?, sex: String?, completion: @escaping (Result<MUser, Error>) -> Void) {
         
-        guard Validators.isFilled(userName: username, desctiption: description, sex: sex) else {
+        guard Validators.isFilled(firstName: firstName, secondName: secondName, desctiption: description, sex: sex) else {
             completion(.failure(UserError.notFilled))
             return
         }
@@ -57,7 +50,7 @@ class FirestoreService {
             return
         }
         
-        var muser = MUser(username: username!, email: email, avatarStringURL: "not exist", description: description!, sex: sex!, id: id)
+        var muser = MUser(firstName: firstName!, secondName: secondName!, email: email, avatarStringURL: "not exist", description: description!, sex: sex!, id: id)
         
         StorageService.shared.upload(photo: avatarImage!) { (result) in
             switch result {
@@ -82,9 +75,11 @@ class FirestoreService {
         let messageRef = reference.document(self.currentUser.id).collection("messages")
         
         let message = MMessage(user: currentUser, content: message)
-        let chat = MChat(friendUsername: currentUser.username,
+        let chat = MChat(friendFirstName: currentUser.firstName,
+                         frientSecondName: currentUser.secondName,
                          friendAvatarStringURL: currentUser.avatarStringURL,
-                         friendId: currentUser.id, lastMessageContent: message.content)
+                         friendId: currentUser.id,
+                         lastMessageContent: message.content)
         
         reference.document(currentUser.id).setData(chat.representation) { (error) in
             if let error = error {
@@ -197,7 +192,12 @@ class FirestoreService {
         let friendRef = usersRef.document(chat.friendId).collection("activeChats").document(currentUser.id)
         let friendMessageRef = friendRef.collection("messages")
         let myMessegeRef = usersRef.document(currentUser.id).collection("activeChats").document(chat.friendId).collection("messages")
-        let chatForFriend = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringURL, friendId: currentUser.id, lastMessageContent: message.content)
+        let chatForFriend = MChat(friendFirstName: currentUser.firstName,
+                                  frientSecondName: currentUser.secondName,
+                                  friendAvatarStringURL: currentUser.avatarStringURL,
+                                  friendId: currentUser.id,
+                                  lastMessageContent: message.content)
+        
         friendRef.setData(chatForFriend.representation) { (error) in
             if let error = error {
                 completion(.failure(error))

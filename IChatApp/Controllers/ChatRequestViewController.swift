@@ -15,8 +15,8 @@ class ChatRequestViewController: UIViewController {
     private let imageView = UIImageView(image: UIImage(named: "human1"), contentMode: .scaleAspectFill)
     private let nameLabel = UILabel(text: "Peter Ben", font: .systemFont(ofSize: 20, weight: .light))
     private let aboutMeLabel = UILabel(text: "You have the opportunity to start a new chat", font: .systemFont(ofSize: 16, weight: .light))
-    private let acceptButton = UIButton(title: "ACCEPT", font: .laoSangamMN20(), titleColor: .white, backgroundColor: .black, cornerRadius: 10, isShadow: false)
-    private let denyButton = UIButton(title: "Deny", font: .laoSangamMN20(), titleColor: #colorLiteral(red: 0.8352941176, green: 0.2, blue: 0.2, alpha: 1), backgroundColor: .clear, cornerRadius: 10, isShadow: false)
+    private let acceptButton = UIButton(title: "ACCEPT", font: .laoSangamMN20(), titleColor: .white, cornerRadius: 10)
+    private let denyButton = UIButton(title: "Deny", font: .laoSangamMN20(), titleColor: #colorLiteral(red: 0.8352941176, green: 0.2, blue: 0.2, alpha: 1), backgroundColor: .clear, cornerRadius: 10)
     
     weak var delegate: WaitingChatsNavigation?
     
@@ -24,7 +24,7 @@ class ChatRequestViewController: UIViewController {
     
     init(chat: MChat) {
         self.chat = chat
-        nameLabel.text = chat.friendUsername
+        nameLabel.text = "\(chat.friendFirstName) \(chat.frientSecondName)"
         loadImage(with: Nuke.ImageRequest(url: URL(string: chat.friendAvatarStringURL)),
                   options: ImageLoadingOptions(placeholder: UIImage(), transition: .fadeIn(duration: 0.5)),
                   into: imageView, completion: nil)
@@ -42,7 +42,7 @@ class ChatRequestViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.acceptButton.applyGradients(cornerRadius: 10)
+        acceptButton.applyButtonGradientBlue(cornerRadius: 10)
     }
     
     private func setupUI() {
@@ -52,11 +52,15 @@ class ChatRequestViewController: UIViewController {
     }
     
     private func customizeElement() {
+        containerView.layer.cornerRadius = 30
+        containerView.backgroundColor = .navigationBarDark()
+        containerView.layer.shadowColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
+        containerView.layer.shadowRadius = 4
+        containerView.layer.shadowOpacity = 0.8
+        containerView.layer.shadowOffset = CGSize(width: 0, height: -6)
+        
         denyButton.layer.borderWidth = 1.2
         denyButton.layer.borderColor = #colorLiteral(red: 0.8352941176, green: 0.2, blue: 0.2, alpha: 1)
-        
-        containerView.backgroundColor = .mainWhite()
-        containerView.layer.cornerRadius = 30
     }
     
     private func setupButton() {
@@ -77,8 +81,8 @@ class ChatRequestViewController: UIViewController {
     }
 }
 
+// MARK: - Setup Constraint
 extension ChatRequestViewController {
-    
     private func setupConstraint() {
         view.addSubview(imageView)
         view.addSubview(containerView)

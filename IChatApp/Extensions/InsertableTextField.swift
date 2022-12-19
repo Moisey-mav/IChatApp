@@ -32,10 +32,14 @@ class InsertableTextField: UITextField {
     }
     
     private func customizedTextField() {
-        backgroundColor = .white
-        placeholder = "White something here ..."
+        backgroundColor = .clear
+        textColor = .white
+        attributedPlaceholder = NSAttributedString(string: "White something here ...",
+                                                   attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.608915627, green: 0.6034373641, blue: 0.6296523213, alpha: 1)])
         font = UIFont.systemFont(ofSize: 14)
         clearButtonMode = .whileEditing
+        layer.borderWidth = 1
+        layer.borderColor = #colorLiteral(red: 0.608915627, green: 0.6034373641, blue: 0.6296523213, alpha: 1)
         layer.cornerRadius = 18
         layer.masksToBounds = true
     }

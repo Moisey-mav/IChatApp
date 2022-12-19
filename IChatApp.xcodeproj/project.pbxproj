@@ -23,6 +23,10 @@
 		947034642940D95500510CB1 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947034632940D95500510CB1 /* AuthViewController.swift */; };
 		947034692940D95700510CB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 947034682940D95700510CB1 /* Assets.xcassets */; };
 		9470346C2940D95700510CB1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9470346A2940D95700510CB1 /* LaunchScreen.storyboard */; };
+		949E5410294E161D0042ACC9 /* ProfileSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E540F294E161D0042ACC9 /* ProfileSettingsViewController.swift */; };
+		949E5412294E26F00042ACC9 /* ProfilePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E5411294E26F00042ACC9 /* ProfilePhotoView.swift */; };
+		949E5414294E3A1F0042ACC9 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E5413294E3A1F0042ACC9 /* TableSection.swift */; };
+		949E5416294E3C600042ACC9 /* ProfileSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E5415294E3C600042ACC9 /* ProfileSettingsCell.swift */; };
 		949E7CE92940DEED00FCB1CD /* UIButton + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E7CE82940DEED00FCB1CD /* UIButton + Extension.swift */; };
 		949E7CEB2940E11000FCB1CD /* UIFont + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E7CEA2940E11000FCB1CD /* UIFont + Extension.swift */; };
 		949E7CED2940E20A00FCB1CD /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E7CEC2940E20A00FCB1CD /* UIColor + Extension.swift */; };
@@ -86,6 +90,10 @@
 		947034682940D95700510CB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9470346B2940D95700510CB1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9470346D2940D95700510CB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		949E540F294E161D0042ACC9 /* ProfileSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewController.swift; sourceTree = "<group>"; };
+		949E5411294E26F00042ACC9 /* ProfilePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoView.swift; sourceTree = "<group>"; };
+		949E5413294E3A1F0042ACC9 /* TableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSection.swift; sourceTree = "<group>"; };
+		949E5415294E3C600042ACC9 /* ProfileSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsCell.swift; sourceTree = "<group>"; };
 		949E7CE82940DEED00FCB1CD /* UIButton + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + Extension.swift"; sourceTree = "<group>"; };
 		949E7CEA2940E11000FCB1CD /* UIFont + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont + Extension.swift"; sourceTree = "<group>"; };
 		949E7CEC2940E20A00FCB1CD /* UIColor + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
@@ -203,6 +211,7 @@
 				949E7D322943643600FCB1CD /* InsertableTextField.swift */,
 				949E7CFA2941026300FCB1CD /* OneLineTextField.swift */,
 				949E7D002941166000FCB1CD /* AddPhotoView.swift */,
+				949E5411294E26F00042ACC9 /* ProfilePhotoView.swift */,
 				949E7D1029421B0400FCB1CD /* Bundle-Decodable.swift */,
 				949E7D1529422DA800FCB1CD /* GadientView.swift */,
 				949E7CF32940EB7300FCB1CD /* UIKit */,
@@ -243,11 +252,12 @@
 			isa = PBXGroup;
 			children = (
 				949E7D06294207E700FCB1CD /* MainTabBarController.swift */,
-				949E7D082942081000FCB1CD /* ListViewController.swift */,
 				949E7D0A2942082600FCB1CD /* PeopleViewController.swift */,
+				949E7D082942081000FCB1CD /* ListViewController.swift */,
 				949E7D302942C16800FCB1CD /* ProfileViewController.swift */,
 				949E7D3629436F2200FCB1CD /* ChatRequestViewController.swift */,
 				940FD6532948B5AC0042B75F /* ChatsViewController.swift */,
+				949E540F294E161D0042ACC9 /* ProfileSettingsViewController.swift */,
 				949E7D122942231000FCB1CD /* Cell */,
 				949E7D22294252E500FCB1CD /* Header */,
 			);
@@ -260,6 +270,7 @@
 				949E7D132942233000FCB1CD /* ActiveChatCell.swift */,
 				949E7D172942343A00FCB1CD /* WaitingChatCell.swift */,
 				949E7D2C2942B50700FCB1CD /* UserCell.swift */,
+				949E5415294E3C600042ACC9 /* ProfileSettingsCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -288,6 +299,7 @@
 				949E7D232942537100FCB1CD /* MUser.swift */,
 				949E7D252942537C00FCB1CD /* MChat.swift */,
 				940FD64C294795770042B75F /* MMessage.swift */,
+				949E5413294E3A1F0042ACC9 /* TableSection.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -410,6 +422,7 @@
 				949E7CF92941009F00FCB1CD /* SignUpViewController.swift in Sources */,
 				940FD646294774AC0042B75F /* ListenerService.swift in Sources */,
 				94F4CAFA294655B200C6C810 /* StorageService.swift in Sources */,
+				949E5414294E3A1F0042ACC9 /* TableSection.swift in Sources */,
 				940FD6542948B5AC0042B75F /* ChatsViewController.swift in Sources */,
 				949E7D0329411EA000FCB1CD /* UISegmentedControl + Extension.swift in Sources */,
 				9453EF5E29449A6400A490A6 /* AuthError.swift in Sources */,
@@ -428,6 +441,7 @@
 				949E7D1129421B0400FCB1CD /* Bundle-Decodable.swift in Sources */,
 				949E7D3729436F2200FCB1CD /* ChatRequestViewController.swift in Sources */,
 				947034602940D95500510CB1 /* AppDelegate.swift in Sources */,
+				949E5410294E161D0042ACC9 /* ProfileSettingsViewController.swift in Sources */,
 				9453EF612944BAAE00A490A6 /* AuthNavigationDelegate.swift in Sources */,
 				949E7CF72940FEFA00FCB1CD /* UIStackView + Extension.swift in Sources */,
 				949E7D012941166000FCB1CD /* AddPhotoView.swift in Sources */,
@@ -437,10 +451,12 @@
 				940FD64D294795770042B75F /* MMessage.swift in Sources */,
 				949E7D3529436B1900FCB1CD /* UIView + Extension.swift in Sources */,
 				949E7CF12940EAB300FCB1CD /* UIImageView + Extension.swift in Sources */,
+				949E5416294E3C600042ACC9 /* ProfileSettingsCell.swift in Sources */,
 				949E7CED2940E20A00FCB1CD /* UIColor + Extension.swift in Sources */,
 				949E7D2D2942B50700FCB1CD /* UserCell.swift in Sources */,
 				949E7D2F2942B68600FCB1CD /* UIViewController + Extension.swift in Sources */,
 				940FD6442947651B0042B75F /* UIImage + Extension.swift in Sources */,
+				949E5412294E26F00042ACC9 /* ProfilePhotoView.swift in Sources */,
 				949E7D182942343A00FCB1CD /* WaitingChatCell.swift in Sources */,
 				947034622940D95500510CB1 /* SceneDelegate.swift in Sources */,
 				949E7D092942081000FCB1CD /* ListViewController.swift in Sources */,

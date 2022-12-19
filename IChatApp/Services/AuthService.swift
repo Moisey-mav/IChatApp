@@ -29,7 +29,6 @@ class AuthService {
     
     func register(email: String?, password: String?, confirmPassword: String?, completion: @escaping(Result<User, Error>) -> Void) {
         
-        
         guard Validators.isFilled(email: email, password: password, confirmPassword: confirmPassword) else {
             completion(.failure(AuthError.notFilled))
             return

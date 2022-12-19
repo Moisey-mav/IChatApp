@@ -6,21 +6,39 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseAuth
 
 class SetupProfileViewController: UIViewController {
     
+    private let containerView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 30
+        view.backgroundColor = .backgroundViewDark()
+        return view
+    }()
+    
+    private let blurView: UIVisualEffectView = {
+        let view = UIVisualEffectView()
+        view.clipsToBounds = true
+        let blurEffect = UIBlurEffect(style: .dark)
+        view.effect = blurEffect
+        return view
+    }()
+    
     private let welcomeLabel = UILabel(text: "Set up profile!", font: .avenir26())
-    private let fullNameLabel = UILabel(text: "Full name *")
+    private let firstNameLabel = UILabel(text: "First name *")
+    private let secondNameLabel = UILabel(text: "Second name *")
     private let aboutMeLabel = UILabel(text: "About me *")
     private let sexLabel = UILabel(text: "Sex *")
     
-    private let fullNameTextField = OneLineTextField(font: .avenir20())
+    private let firstNameTextField = OneLineTextField(font: .avenir20())
+    private let secondNameTextField = OneLineTextField(font: .avenir20())
     private let aboutMeTextField = OneLineTextField(font: .avenir20())
     
     private let sexSegmentedControl = UISegmentedControl(first: "Male", second: "Femail")
     
-    private let goToChatsButton = UIButton(title: "Go to chats!", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
+    private let goToChatsButton = UIButton(title: "Go to chats!", titleColor: .white, backgroundColor: .clear, cornerRadius: 4)
     
     private let fullImageView = AddPhotoView()
     private let currentUser: User
@@ -39,10 +57,33 @@ class SetupProfileViewController: UIViewController {
         setupUI()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setColorObject()
+    }
+    
     private func setupUI() {
-        view.backgroundColor = .white
         setupConstraints()
         setupButton()
+    }
+    
+    private func setColorObject() {
+        containerView.layer.cornerRadius = 30
+        containerView.layer.shadowColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
+        containerView.layer.shadowRadius = 4
+        containerView.layer.shadowOpacity = 0.8
+        containerView.layer.shadowOffset = CGSize(width: 0, height: -6)
+        
+        containerView.applyViewGradient(cornerRadius: 30)
+        goToChatsButton.applyButtonGradientBlue(cornerRadius: 15)
+        view.applyViewGradient(cornerRadius: 0)
+        
+        firstNameLabel.textColor = .headerTextField()
+        secondNameLabel.textColor = .headerTextField()
+        aboutMeLabel.textColor = .headerTextField()
+        sexLabel.textColor = .headerTextField()
+        
+
     }
     
     private func setupButton() {
@@ -51,7 +92,7 @@ class SetupProfileViewController: UIViewController {
     }
     
     @objc private func goToChatsButtonTapped() {
-        FirestoreService.shared.saveProfileWith( id: currentUser.uid, email: currentUser.email!, username: fullNameTextField.text, avatarImage: fullImageView.circleImageView.image, description: aboutMeTextField.text, sex: sexSegmentedControl.titleForSegment(at: sexSegmentedControl.selectedSegmentIndex)) { (result) in
+        FirestoreService.shared.saveProfileWith(id: currentUser.uid, email: currentUser.email!, firstName: firstNameTextField.text, secondName: secondNameTextField.text, avatarImage: fullImageView.circleImageView.image, description: aboutMeTextField.text, sex: sexSegmentedControl.titleForSegment(at: sexSegmentedControl.selectedSegmentIndex)) { (result) in
                 switch result {
                 case .success(let muser):
                     self.showAlert(with: "Успешно!", and: "Данные сохранены!", completion: {
@@ -72,14 +113,29 @@ class SetupProfileViewController: UIViewController {
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true)
     }
+}
+
+// MARK: - Setup Constraint
+
+extension SetupProfileViewController {
     
     private func setupConstraints() {
-        let fillNameStackView = UIStackView(arrangedSubvews: [fullNameLabel, fullNameTextField], axis: .vertical, spacing: 0)
+        let firstNameStackView = UIStackView(arrangedSubvews: [firstNameLabel, firstNameTextField], axis: .vertical, spacing: 0)
+        let secondNameStackView = UIStackView(arrangedSubvews: [secondNameLabel, secondNameTextField], axis: .vertical, spacing: 0)
         let aboutMeStackView = UIStackView(arrangedSubvews: [aboutMeLabel, aboutMeTextField], axis: .vertical, spacing: 0)
         let sexStackView = UIStackView(arrangedSubvews: [sexLabel, sexSegmentedControl], axis: .vertical, spacing: 12)
         
         goToChatsButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        let stackView = UIStackView(arrangedSubvews: [fillNameStackView, aboutMeStackView, sexStackView, goToChatsButton], axis: .vertical, spacing: 40)
+        let stackView = UIStackView(arrangedSubvews: [firstNameStackView, secondNameStackView, aboutMeStackView, sexStackView, goToChatsButton], axis: .vertical, spacing: 20)
+        
+        view.addSubview(blurView)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blurView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            blurView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            blurView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            blurView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
         
         view.addSubview(welcomeLabel)
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -88,17 +144,26 @@ class SetupProfileViewController: UIViewController {
             welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
-        view.addSubview(fullImageView)
+        view.addSubview(containerView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            containerView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -200)
+        ])
+        
+        containerView.addSubview(fullImageView)
         fullImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            fullImageView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 40),
+            fullImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 40),
             fullImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
-        view.addSubview(stackView)
+        containerView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: fullImageView.bottomAnchor, constant: 40),
+            stackView.topAnchor.constraint(equalTo: fullImageView.bottomAnchor, constant: 20),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])
@@ -114,24 +179,3 @@ extension SetupProfileViewController: UINavigationControllerDelegate, UIImagePic
     }
 }
 
-// MARK: - SwiftUI
-
-import SwiftUI
-
-struct SetupProfileViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let profileVC = SetupProfileViewController(currentUser: Auth.auth().currentUser!)
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<SetupProfileViewControllerProvider.ContainerView>) -> UIViewController {
-            return profileVC
-        }
-        
-        func updateUIViewController(_ uiViewController: SetupProfileViewControllerProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<SetupProfileViewControllerProvider.ContainerView>) {
-            
-        }
-    }
-}

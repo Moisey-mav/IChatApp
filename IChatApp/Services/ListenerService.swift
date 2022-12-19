@@ -15,13 +15,9 @@ class ListenerService {
     
     private let db = Firestore.firestore()
     
-    private var usersRef: CollectionReference {
-        return db.collection("users")
-    }
+    private var usersRef: CollectionReference { return db.collection("users") }
     
-    private var currentUserId: String {
-        return Auth.auth().currentUser!.uid
-    }
+    private var currentUserId: String { return Auth.auth().currentUser!.uid }
     
     func usersObserve(users: [MUser], completion: @escaping(Result<[MUser], Error>) -> Void) -> ListenerRegistration? {
         var users = users

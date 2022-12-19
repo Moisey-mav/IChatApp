@@ -12,20 +12,12 @@ import FirebaseStorage
 class StorageService {
     
     static let shared = StorageService()
-
     let storageRef = Storage.storage().reference()
     
-    private var avatarsRef: StorageReference {
-        return storageRef.child("avatars")
-    }
+    private var avatarsRef: StorageReference { return storageRef.child("avatars") }
+    private var chatsRef: StorageReference { return storageRef.child("chats") }
     
-    private var chatsRef: StorageReference {
-        return storageRef.child("chats")
-    }
-    
-    private var currentUserId: String {
-        return Auth.auth().currentUser!.uid
-    }
+    private var currentUserId: String { return Auth.auth().currentUser!.uid }
     
     func upload(photo: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
         guard let scaledImage = photo.scaledToSafeUploadSize, let imageData = scaledImage.jpegData(compressionQuality: 0.4) else { return }
@@ -56,7 +48,7 @@ class StorageService {
         
         let imageName = [UUID().uuidString, String(Date().timeIntervalSince1970)].joined()
         let uid: String = Auth.auth().currentUser!.uid
-        let chatName = [chat.friendUsername, uid].joined()
+        let chatName = [chat.friendFirstName, chat.frientSecondName, uid].joined()
         
         self.chatsRef.child(chatName).child(imageName).putData(imageData, metadata: metadata) { (metadata, error) in
             guard let _ = metadata else {

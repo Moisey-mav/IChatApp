@@ -10,15 +10,23 @@ import GoogleSignIn
 
 class AuthViewController: UIViewController {
     
+    private let blurView: UIVisualEffectView = {
+        let view = UIVisualEffectView()
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 15
+        let blurEffect = UIBlurEffect(style: .dark)
+        view.effect = blurEffect
+        return view
+    }()
+    
     private let logoImageView = UIImageView(image: UIImage(named: "AppLogo"), contentMode: .scaleAspectFit)
     
-    private let googleLabel = UILabel(text: "Get started with")
-    private let emailLabel = UILabel(text: "Or sign up with")
-    private let loginLabel = UILabel(text: "Alrady onboard?")
+    private let emailLabel = UILabel(text: "Need an account?")
+    private let loginLabel = UILabel(text: "Already onboard?")
     
-    private let googleButton = UIButton(title: "Google", titleColor: .black, backgroundColor: .white, isShadow: true)
-    private let emailButton = UIButton(title: "Email", titleColor: .white, backgroundColor: .buttonDark())
-    private let loginButton = UIButton(title: "Login", titleColor: .buttonRed(), backgroundColor: .white, isShadow: true)
+    private let loginButton = UIButton(title: "Login", titleColor: .white)
+    private let emailButton = UIButton(title: "Sing Up", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 15, isShadowStyle: true)
+    
     
     private let signUpVC = SignUpViewController()
     private let loginVC = LoginViewController()
@@ -31,12 +39,22 @@ class AuthViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         setupConstraints()
-        setCustom()
         setupButton()
+        emailButton.clipsToBounds = true
+        
     }
     
-    private func setCustom() {
-        googleButton.customizeGoogleButton()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        customizeElement()
+    }
+    
+    private func customizeElement() {
+        emailLabel.textColor = .headerTextField()
+        loginLabel.textColor = .headerTextField()
+        
+        loginButton.applyButtonGradientBlue(cornerRadius: 15)
+        view.applyViewGradient(cornerRadius: 0)
     }
     
     private func setupButton() {
@@ -59,10 +77,9 @@ class AuthViewController: UIViewController {
 extension AuthViewController {
     
     private func setupConstraints() {
-        let googleView = ButtonFromView(label: googleLabel, button: googleButton)
         let emailView = ButtonFromView(label: emailLabel, button: emailButton)
         let loginView = ButtonFromView(label: loginLabel, button: loginButton)
-        let stackView = UIStackView(arrangedSubvews: [googleView, emailView, loginView], axis: .vertical, spacing: 40)
+        let stackView = UIStackView(arrangedSubvews: [loginView, emailView], axis: .vertical, spacing: 30)
         
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,13 +87,23 @@ extension AuthViewController {
             logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 100),
-            logoImageView.widthAnchor.constraint(equalToConstant: 100),
+            logoImageView.widthAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        view.addSubview(blurView)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blurView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            blurView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            blurView.heightAnchor.constraint(equalToConstant: 300),
+            blurView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40)
         ])
         
         view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 100),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])
@@ -92,8 +119,6 @@ extension AuthViewController: AuthNavigationDelegate {
         present(signUpVC, animated: true)
     }
 }
-
-//extension AuthViewController: GIDSignInDe
 
 // MARK: - SwiftUI
 

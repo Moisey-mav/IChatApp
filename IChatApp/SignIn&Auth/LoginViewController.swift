@@ -12,13 +12,18 @@ class LoginViewController: UIViewController {
     private let containerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 30
-        view.backgroundColor = .mainWhite()
+        return view
+    }()
+    
+    private let blurView: UIVisualEffectView = {
+        let view = UIVisualEffectView()
+        view.clipsToBounds = true
+        let blurEffect = UIBlurEffect(style: .dark)
+        view.effect = blurEffect
         return view
     }()
     
     private let welcomeLabel = UILabel(text: "Welcom back!", font: .avenir26())
-    private let loginLabel = UILabel(text: "Login with")
-    private let orLabel = UILabel(text: "or")
     private let emailLabel = UILabel(text: "Email")
     private let passwordLabel = UILabel(text: "Password")
     private let needAnAccountLabel = UILabel(text: "Need an account?")
@@ -26,7 +31,7 @@ class LoginViewController: UIViewController {
     private let emailTextField = OneLineTextField(font: .avenir20())
     private let passwordTextField = OneLineTextField(font: .avenir20())
     
-    private let googleButton = UIButton(title: "Google", titleColor: .black, backgroundColor: .white, isShadow: true)
+    private let googleButton = UIButton(title: "Login with Google", font: .avenir15(), titleColor: .white, backgroundColor: .white)
     private let loginButton = UIButton(title: "Login", titleColor: .white, backgroundColor: .buttonDark())
     private let signUpButton: UIButton = {
         let button = UIButton()
@@ -46,23 +51,35 @@ class LoginViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        view.applyGradients(cornerRadius: 0)
+        customizeElement()
     }
     
     private func setupUI() {
         setupConstraint()
         setCustom()
-        costomizeElement()
+        customizeElement()
         setupButton()
+    }
+    
+    private func customizeElement() {
+        containerView.layer.cornerRadius = 30
+        containerView.layer.shadowColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
+        containerView.layer.shadowRadius = 4
+        containerView.layer.shadowOpacity = 0.8
+        containerView.layer.shadowOffset = CGSize(width: 0, height: -6)
+        
+        containerView.applyViewGradient(cornerRadius: 30)
+        loginButton.applyButtonGradientBlue(cornerRadius: 15)
+        googleButton.applyGoogleButtonGradient(cornerRadius: 15)
+        
+        emailLabel.textColor = .headerTextField()
+        passwordLabel.textColor = .headerTextField()
+        needAnAccountLabel.textColor = .headerTextField()
+        welcomeLabel.textColor = .white
     }
     
     private func setCustom() {
         googleButton.customizeGoogleButton()
-    }
-    
-    private func costomizeElement() {
-        welcomeLabel.textColor = .white
-        orLabel.textAlignment = .center
     }
     
     private func setupButton() {
@@ -105,17 +122,26 @@ class LoginViewController: UIViewController {
 extension LoginViewController {
     
     private func setupConstraint() {
-        let loginWithView = ButtonFromView(label: loginLabel, button: googleButton)
-        let emailStackView = UIStackView(arrangedSubvews: [emailLabel, emailTextField], axis: .vertical, spacing: 0)
-        let passwordStackView = UIStackView(arrangedSubvews: [passwordLabel, passwordTextField], axis: .vertical, spacing: 0)
+        let loginWithView = ButtonFromView(label: UILabel(), button: googleButton)
+        let emailStackView = UIStackView(arrangedSubvews: [emailLabel, emailTextField], axis: .vertical, spacing: 5)
+        let passwordStackView = UIStackView(arrangedSubvews: [passwordLabel, passwordTextField], axis: .vertical, spacing: 5)
         
         loginButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        let stackView = UIStackView(arrangedSubvews: [loginWithView, emailStackView, passwordStackView, loginButton], axis: .vertical, spacing: 40)
+        let stackView = UIStackView(arrangedSubvews: [emailStackView, passwordStackView, loginButton, googleButton], axis: .vertical, spacing: 40)
         
-        let googleStackView = UIStackView(arrangedSubvews: [orLabel, loginWithView], axis: .vertical, spacing: 10)
+        let googleStackView = UIStackView(arrangedSubvews: [loginWithView], axis: .vertical, spacing: 10)
       
         let bottomStackView = UIStackView(arrangedSubvews: [needAnAccountLabel, signUpButton], axis: .horizontal, spacing: 10)
         bottomStackView.alignment = .firstBaseline
+        
+        view.addSubview(blurView)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blurView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            blurView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            blurView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            blurView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
         
         view.addSubview(welcomeLabel)
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -156,27 +182,5 @@ extension LoginViewController {
             bottomStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 40),
             bottomStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -40)
         ])
-    }
-}
-
-// MARK: - SwiftUI
-
-import SwiftUI
-
-struct LoginViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let loginVC = LoginViewController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<LoginViewControllerProvider.ContainerView>) -> UIViewController {
-            return loginVC
-        }
-        
-        func updateUIViewController(_ uiViewController: LoginViewControllerProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<LoginViewControllerProvider.ContainerView>) {
-            
-        }
     }
 }

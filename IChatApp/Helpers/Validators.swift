@@ -21,11 +21,13 @@ class Validators {
         return true
     }
     
-    static func isFilled(userName: String?, desctiption: String?, sex: String?) -> Bool {
-        guard let userName = userName,
+    static func isFilled(firstName: String?, secondName: String?, desctiption: String?, sex: String?) -> Bool {
+        guard let firstName = firstName,
+              let secondName = secondName,
               let desctiption = desctiption,
               let sex = sex,
-              userName != "",
+              firstName != "",
+              secondName != "",
               desctiption != "",
               sex != "" else {
             return false

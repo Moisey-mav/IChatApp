@@ -33,14 +33,34 @@ class UserCell: UICollectionViewCell, SelfConfigureCell {
     }
     
     private func configureCell() {
-        backgroundColor = .white
-        self.layer.cornerRadius = 4
-        self.layer.shadowColor = #colorLiteral(red: 0.7411764706, green: 0.7411764706, blue: 0.7411764706, alpha: 1)
-        self.layer.shadowRadius = 3
+        backgroundColor = #colorLiteral(red: 0.1550748348, green: 0.1440279186, blue: 0.1960613728, alpha: 1)
+        self.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        self.layer.shadowRadius = 4
         self.layer.shadowOpacity = 0.5
-        self.layer.shadowOffset = CGSize(width: 0, height: 4)
+        self.layer.shadowOffset = CGSize(width: 0, height: 6)
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        userImageView.image = nil
+    }
+    
+    func configure<U>(with value: U) where U : Hashable {
+        guard let user: MUser = value as? MUser else { return }
+        guard let url = URL(string: user.avatarStringURL) else { return }
+        let nukeRequest = Nuke.ImageRequest(url: url)
+        let options = ImageLoadingOptions(placeholder: UIImage(), transition: .fadeIn(duration: 0.5))
+        loadImage(with: nukeRequest, options: options, into: userImageView, completion: nil)
+        userName.text = "\(user.firstName) \(user.secondName)"
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - Setup Constraint
+extension UserCell {
     private func setupConstraint() {
         addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -69,30 +89,7 @@ class UserCell: UICollectionViewCell, SelfConfigureCell {
             userName.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
     }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        userImageView.image = nil
-    }
-    
-    func configure<U>(with value: U) where U : Hashable {
-        guard let user: MUser = value as? MUser else { return }
-        guard let url = URL(string: user.avatarStringURL) else { return }
-        let nukeRequest = Nuke.ImageRequest(url: url)
-        let options = ImageLoadingOptions(placeholder: UIImage(), transition: .fadeIn(duration: 0.5))
-        loadImage(with: nukeRequest, options: options, into: userImageView, completion: nil)
-        userName.text = user.username
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    
-    
 }
-
 
 // MARK: - SwiftUI
 

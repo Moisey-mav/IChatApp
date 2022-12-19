@@ -13,12 +13,20 @@ class WaitingChatCell: UICollectionViewCell, SelfConfigureCell {
     
     static var identifier = "WaitingChatCell"
     
-    let friendImageView = UIImageView()
+    private let friendImageView = UIImageView()
+    private let userName = UILabel(text: "text", font: .laoSangamMN10())
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureCell()
         setupConstraint()
+        customizeElement()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        friendImageView.layer.masksToBounds = true
+        friendImageView.layer.cornerRadius = friendImageView.frame.width / 2
     }
     
     func configure<U>(with value: U) where U : Hashable {
@@ -27,29 +35,47 @@ class WaitingChatCell: UICollectionViewCell, SelfConfigureCell {
         let nukeRequest = Nuke.ImageRequest(url: url)
         let options = ImageLoadingOptions(placeholder: UIImage(), transition: .fadeIn(duration: 0.5))
         loadImage(with: nukeRequest, options: options, into: friendImageView, completion: nil)
+        userName.text = chat.friendFirstName
     }
     
     private func configureCell() {
-        backgroundColor = .yellow
+        backgroundColor = .clear
         self.layer.cornerRadius = 4
         self.clipsToBounds = true
     }
     
-    private func setupConstraint() {
-        addSubview(friendImageView)
-        friendImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            friendImageView.topAnchor.constraint(equalTo: self.topAnchor),
-            friendImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            friendImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            friendImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        ])
+    private func customizeElement() {
+        friendImageView.layer.borderWidth = 1
+        friendImageView.layer.borderColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
+        userName.textAlignment = .center
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+}
+
+// MARK: - Setup Constraint
+extension WaitingChatCell {
+    private func setupConstraint() {
+        addSubview(friendImageView)
+        friendImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            friendImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            friendImageView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            friendImageView.widthAnchor.constraint(equalTo: self.widthAnchor),
+            friendImageView.heightAnchor.constraint(equalTo: self.widthAnchor)
+           
+        ])
+        addSubview(userName)
+        userName.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            userName.topAnchor.constraint(equalTo: friendImageView.bottomAnchor),
+            userName.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
+            userName.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
+            userName.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
+    }
 }
 
 // MARK: - SwiftUI

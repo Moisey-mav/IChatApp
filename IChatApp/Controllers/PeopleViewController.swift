@@ -33,7 +33,7 @@ class PeopleViewController: UIViewController {
     init(currentUser: MUser) {
         self.currentUser = currentUser
         super.init(nibName: nil, bundle: nil)
-        title = currentUser.username
+        title = "\(currentUser.firstName) \(currentUser.secondName)"
     }
     
     deinit {
@@ -57,22 +57,32 @@ class PeopleViewController: UIViewController {
                 self.showAlert(with: "Ошибка!", and: error.localizedDescription)
             }
         })
-        
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setColorObject()
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
         setupSearchBar()
         setupCollectionView()
         stupNavigation()
     }
     
+    private func setColorObject() {
+        view.applyViewGradient(cornerRadius: 0)
+        collectionView.backgroundColor = .clear
+    }
+    
     private func stupNavigation() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log Out", style: .plain, target: self, action: #selector(signOut))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(profileWindow))
+        navigationItem.rightBarButtonItem?.tintColor = .white
     }
     
     private func setupSearchBar() {
-        navigationController?.navigationBar.barTintColor = .mainWhite()
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.barTintColor = .navigationBarDark()
         navigationController?.navigationBar.shadowImage = UIImage()
         let searchController = UISearchController(searchResultsController: nil)
         navigationItem.searchController = searchController
@@ -82,18 +92,8 @@ class PeopleViewController: UIViewController {
         searchController.searchBar.delegate = self
     }
     
-    @objc func signOut() {
-        let alertController = UIAlertController(title: nil, message: "Are you sure you want to sign out?", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alertController.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { (_) in
-            do {
-                try Auth.auth().signOut()
-                UIApplication.shared.keyWindow?.rootViewController = AuthViewController()
-            } catch {
-                print("Error signing out: \(error.localizedDescription)")
-            }
-        }))
-        present(alertController, animated: true)
+    @objc func profileWindow() {
+        self.present(ProfileSettingsViewController(currentUser: currentUser), animated: true, completion: nil)
     }
     
     private func setupCollectionView() {
@@ -105,7 +105,6 @@ class PeopleViewController: UIViewController {
     private func creatingCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = .mainWhite()
         view.addSubview(collectionView)
         registerCell()
     }
@@ -119,7 +118,7 @@ class PeopleViewController: UIViewController {
         collectionView.delegate = self
     }
     
-    private func reloadData(with searchText: String?) {
+    private func reloadData(with searchText: String? = "") {
         let filtered = users.filter { (user) -> Bool in
             user.contains(filter: searchText)
         }
@@ -130,6 +129,7 @@ class PeopleViewController: UIViewController {
     }
 }
 
+// MARK: - Data Source
 extension PeopleViewController {
     private func createDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, MUser>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, user) -> UICollectionViewCell? in
@@ -144,12 +144,13 @@ extension PeopleViewController {
             guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeader.identifier, for: indexPath) as? SectionHeader else { fatalError("Can not create new section header") }
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unkniwn section kind") }
             let items = self.dataSource.snapshot().itemIdentifiers(inSection: .users)
-            sectionHeader.configure(text: section.description(usersCount: items.count), font: .systemFont(ofSize: 36), textColor: .label)
+            sectionHeader.configure(text: section.description(usersCount: items.count), font: .systemFont(ofSize: 36), textColor: .white)
             return sectionHeader
         }
     }
 }
 
+// MARK: - UICollectionViewLayout
 extension PeopleViewController {
     private func createCompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnviroment) -> NSCollectionLayoutSection in

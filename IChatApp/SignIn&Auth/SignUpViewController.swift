@@ -12,13 +12,21 @@ class SignUpViewController: UIViewController {
     private let containerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 30
-        view.backgroundColor = .mainWhite()
+        view.backgroundColor = .backgroundViewDark()
+        return view
+    }()
+    
+    private let blurView: UIVisualEffectView = {
+        let view = UIVisualEffectView()
+        view.clipsToBounds = true
+        let blurEffect = UIBlurEffect(style: .dark)
+        view.effect = blurEffect
         return view
     }()
     
     private let welcomeLabel = UILabel(text: "Good to see you!", font: .avenir26())
     private let emailLabel = UILabel(text: "Email")
-    private let passwprdLabel = UILabel(text: "Password")
+    private let passwordLabel = UILabel(text: "Password")
     private let confirmPasswordLabel = UILabel(text: "Confirm password")
     private let alreadyOnboardLabel = UILabel(text: "Already onboard?")
     
@@ -26,7 +34,7 @@ class SignUpViewController: UIViewController {
     private let passwordTextField = OneLineTextField(font: .avenir20())
     private let confirmPasswordTextField = OneLineTextField(font: .avenir20())
     
-    private let signUpButton = UIButton(title: "Sing Up", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
+    private let signUpButton = UIButton(title: "Sing Up", titleColor: .white, backgroundColor: .clear, cornerRadius: 15)
     private let loginButton: UIButton = {
         let button = UIButton()
         button.setTitle("Login", for: .normal)
@@ -45,12 +53,28 @@ class SignUpViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        view.applyGradients(cornerRadius: 0)
+        customizeElement()
     }
     
     private func setupUI() {
         setupConstraint()
         setupButton()
+    }
+    
+    private func customizeElement() {
+        containerView.layer.cornerRadius = 30
+        containerView.layer.shadowColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
+        containerView.layer.shadowRadius = 4
+        containerView.layer.shadowOpacity = 0.8
+        containerView.layer.shadowOffset = CGSize(width: 0, height: -6)
+        
+        containerView.applyViewGradient(cornerRadius: 30)
+        signUpButton.applyButtonGradientBlue(cornerRadius: 15)
+        
+        emailLabel.textColor = .headerTextField()
+        passwordLabel.textColor = .headerTextField()
+        confirmPasswordLabel.textColor = .headerTextField()
+        alreadyOnboardLabel.textColor = .headerTextField()
     }
     
     private func setupButton() {
@@ -83,7 +107,6 @@ class SignUpViewController: UIViewController {
 }
 
 extension UIViewController {
-    
     func showAlert(with title: String, and message: String, completion: @escaping () -> Void = { }) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
@@ -100,14 +123,24 @@ extension UIViewController {
 extension SignUpViewController {
     
     private func setupConstraint() {
-        let emailStackView = UIStackView(arrangedSubvews: [emailLabel, emailTextField], axis: .vertical, spacing: 0)
-        let passwordStackView = UIStackView(arrangedSubvews: [passwprdLabel, passwordTextField], axis: .vertical, spacing: 0)
-        let confirmPasswordStackView = UIStackView(arrangedSubvews: [confirmPasswordLabel, confirmPasswordTextField], axis: .vertical, spacing: 0)
+        let emailStackView = UIStackView(arrangedSubvews: [emailLabel, emailTextField], axis: .vertical, spacing: 5)
+        let passwordStackView = UIStackView(arrangedSubvews: [passwordLabel, passwordTextField], axis: .vertical, spacing: 5)
+        let confirmPasswordStackView = UIStackView(arrangedSubvews: [confirmPasswordLabel, confirmPasswordTextField], axis: .vertical, spacing: 5)
         
         signUpButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        let stackView = UIStackView(arrangedSubvews: [emailStackView, passwordStackView, confirmPasswordStackView, signUpButton], axis: .vertical, spacing: 40)
+        let stackView = UIStackView(arrangedSubvews: [emailStackView, passwordStackView, confirmPasswordStackView, signUpButton], axis: .vertical, spacing: 25)
         let bottomStackView = UIStackView(arrangedSubvews: [alreadyOnboardLabel, loginButton], axis: .horizontal, spacing: 10)
        
+        
+        view.addSubview(blurView)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blurView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            blurView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            blurView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            blurView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
+        
         view.addSubview(welcomeLabel)
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -140,27 +173,5 @@ extension SignUpViewController {
             bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])
-    }
-}
-
-// MARK: - SwiftUI
-
-import SwiftUI
-
-struct SignUpViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let signUpVC = SignUpViewController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<SignUpViewControllerProvider.ContainerView>) -> UIViewController {
-            return signUpVC
-        }
-        
-        func updateUIViewController(_ uiViewController: SignUpViewControllerProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<SignUpViewControllerProvider.ContainerView>) {
-            
-        }
     }
 }

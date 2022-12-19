@@ -37,7 +37,7 @@ class ListViewController: UIViewController {
     init(currentUser: MUser) {
         self.currentUser = currentUser
         super.init(nibName: nil, bundle: nil)
-        title = currentUser.username
+        title = "\(currentUser.firstName) \(currentUser.secondName)"
     }
     
     required init?(coder: NSCoder) {
@@ -54,16 +54,37 @@ class ListViewController: UIViewController {
         setupUI()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setColorObject()
+    }
+    
     private func setupUI() {
         view.backgroundColor = .white
+        stupNavigation()
         setupSearchBar()
         setupCollectionView()
-        reloadData()
+        reloadData(with: nil)
         setupListener()
     }
     
+    private func setColorObject() {
+        view.applyViewGradient(cornerRadius: 0)
+        collectionView.backgroundColor = .clear
+    }
+    
+    private func stupNavigation() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(profileWindow))
+        navigationItem.rightBarButtonItem?.tintColor = .white
+    }
+    
+    @objc func profileWindow() {
+        self.present(ProfileSettingsViewController(currentUser: currentUser), animated: true, completion: nil)
+    }
+    
     private func setupSearchBar() {
-        navigationController?.navigationBar.barTintColor = .mainWhite()
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.barTintColor = .navigationBarDark()
         navigationController?.navigationBar.shadowImage = UIImage()
         let searchController = UISearchController(searchResultsController: nil)
         navigationItem.searchController = searchController
@@ -83,7 +104,7 @@ class ListViewController: UIViewController {
                     self.present(chatRequestVC, animated: true, completion: nil)
                 }
                 self.waitingChats = chats
-                self.reloadData()
+                self.reloadData(with: nil)
             case .failure(let error):
                 self.showAlert(with: "Ошибка!", and: error.localizedDescription)
             }
@@ -93,7 +114,7 @@ class ListViewController: UIViewController {
             switch result {
             case .success(let chats):
                 self.activeChats = chats
-                self.reloadData()
+                self.reloadData(with: nil)
             case .failure(let error):
                 self.showAlert(with: "Ошибка!", and: error.localizedDescription)
             }
@@ -103,13 +124,12 @@ class ListViewController: UIViewController {
     private func setupCollectionView() {
         creatingCollectionView()
         createDataSource()
-        reloadData()
+        reloadData(with: nil)
     }
     
     private func creatingCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = .mainWhite()
         view.addSubview(collectionView)
         registerCell()
         
@@ -122,15 +142,22 @@ class ListViewController: UIViewController {
         collectionView.register(WaitingChatCell.self, forCellWithReuseIdentifier: WaitingChatCell.identifier)
     }
     
-    private func reloadData() {
+    private func reloadData(with searchText: String? = "") {
+        let filterWaeiting = waitingChats.filter { (chat) -> Bool in
+            chat.contains(filter: searchText)
+        }
+        let filterActive = activeChats.filter { (chat) -> Bool in
+            chat.contains(filter: searchText)
+        }
         var snapshot = NSDiffableDataSourceSnapshot<Section, MChat>()
         snapshot.appendSections([.waitingChats, .activeChat])
-        snapshot.appendItems(activeChats, toSection: .activeChat)
-        snapshot.appendItems(waitingChats, toSection: .waitingChats)
+        snapshot.appendItems(filterActive, toSection: .activeChat)
+        snapshot.appendItems(filterWaeiting, toSection: .waitingChats)
         dataSource?.apply(snapshot, animatingDifferences: true)
     }
 }
 // MARK: - UICollectionViewDelegate
+
 extension ListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let chat = self.dataSource?.itemIdentifier(for: indexPath) else { return }
@@ -152,7 +179,7 @@ extension ListViewController: WaitingChatsNavigation {
         FirestoreService.shared.deleteWaitingChat(chat: chat) { (result) in
             switch result {
             case .success:
-                self.showAlert(with: "Успешно!", and: "Чат с \(chat.friendUsername) был удален")
+                self.showAlert(with: "Успешно!", and: "Чат с \(chat.friendFirstName) был удален")
             case .failure(let error):
                 self.showAlert(with: "Ошибка!", and: error.localizedDescription)
             }
@@ -163,7 +190,7 @@ extension ListViewController: WaitingChatsNavigation {
         FirestoreService.shared.changeToActive(chat: chat) { (result) in
             switch result {
             case .success():
-                self.showAlert(with: "Успешно!", and: "Приятного общения с \(chat.friendUsername).")
+                self.showAlert(with: "Успешно!", and: "Приятного общения с \(chat.friendFirstName).")
             case .failure(let error):
                 self.showAlert(with: "Ошибка!", and: error.localizedDescription)
             }
@@ -173,11 +200,10 @@ extension ListViewController: WaitingChatsNavigation {
 
 // MARK: - Data Source
 extension ListViewController {
-    
     private func createDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, MChat>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, chat) in
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section kind") }
-            
+
             switch section {
             case .waitingChats:
                 return self.configure(collectionView: collectionView, cellType: WaitingChatCell.self, with: chat, for: indexPath)
@@ -218,7 +244,7 @@ extension ListViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(88), heightDimension: .absolute(88))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(68), heightDimension: .absolute(100))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         
@@ -258,7 +284,7 @@ extension ListViewController {
 // MARK: - Search bar
 extension ListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
+        reloadData(with: searchText)
     }
 }
 

@@ -16,7 +16,7 @@ class ActiveChatCell: UICollectionViewCell, SelfConfigureCell {
     let friendImageView = UIImageView()
     let friendName = UILabel(text: "User name", font: .laoSangamMN20())
     let lastMessage = UILabel(text: "Hello", font: .laoSangamMN18())
-    let gradientView = GradientView(from: .topTrailing, to: .bottomLeading, startColor: #colorLiteral(red: 0.7882352941, green: 0.631372549, blue: 0.9411764706, alpha: 1), endColor: #colorLiteral(red: 0.4784313725, green: 0.6980392157, blue: 0.9215686275, alpha: 1))
+    let gradientView = GradientView(from: .topTrailing, to: .bottomLeading, startColor: #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1), endColor: #colorLiteral(red: 0.113606371, green: 0.2567458153, blue: 0.5360535979, alpha: 1))
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,7 +27,7 @@ class ActiveChatCell: UICollectionViewCell, SelfConfigureCell {
     func configure<U>(with value: U) where U : Hashable {
         guard let chat: MChat = value as? MChat else { return }
         guard let url = URL(string: chat.friendAvatarStringURL) else { return }
-        friendName.text = chat.friendUsername
+        friendName.text = "\(chat.friendFirstName) \(chat.frientSecondName)"
         lastMessage.text = chat.lastMessageContent
         loadImage(with: Nuke.ImageRequest(url: url),
                   options: ImageLoadingOptions(placeholder: UIImage(), transition: .fadeIn(duration: 0.5)),
@@ -35,9 +35,12 @@ class ActiveChatCell: UICollectionViewCell, SelfConfigureCell {
     }
     
     private func configureCell() {
-        backgroundColor = .white
-        self.layer.cornerRadius = 4
-        self.clipsToBounds = true
+        backgroundColor = #colorLiteral(red: 0.1550748348, green: 0.1440279186, blue: 0.1960613728, alpha: 1)
+        self.layer.cornerRadius = 10
+        self.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        self.layer.shadowRadius = 4
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: 0, height: 6)
     }
     
     required init?(coder: NSCoder) {
@@ -45,7 +48,7 @@ class ActiveChatCell: UICollectionViewCell, SelfConfigureCell {
     }
 }
 
-// MARK: - Constraints
+// MARK: - Setup Constraints
 extension ActiveChatCell {
     private func setupConstraint() {
         addSubview(friendImageView)

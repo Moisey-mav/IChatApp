@@ -21,7 +21,7 @@ class ProfileViewController: UIViewController {
     
     init(user: MUser) {
         self.user = user
-        self.nameLabel.text = user.username
+        self.nameLabel.text = "\(user.firstName) \(user.secondName)"
         self.aboutMeLabel.text = user.description
         let url = URL(string: user.avatarStringURL)
         loadImage(with: Nuke.ImageRequest(url: url),
@@ -42,7 +42,7 @@ class ProfileViewController: UIViewController {
     
     private func setupUI() {
         configureView()
-        costomizeElement()
+        customizeElement()
         setupConstraint()
         setupButton()
     }
@@ -51,10 +51,15 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .mainWhite()
     }
     
-    private func costomizeElement() {
-        aboutMeLabel.numberOfLines = 0
+    private func customizeElement() {
         containerView.layer.cornerRadius = 30
-        containerView.backgroundColor = .mainWhite()
+        containerView.backgroundColor = .navigationBarDark()
+        containerView.layer.shadowColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
+        containerView.layer.shadowRadius = 4
+        containerView.layer.shadowOpacity = 0.8
+        containerView.layer.shadowOffset = CGSize(width: 0, height: -6)
+        
+        aboutMeLabel.numberOfLines = 0
         myTextField.borderStyle = .roundedRect
     }
     
@@ -71,14 +76,17 @@ class ProfileViewController: UIViewController {
             FirestoreService.shared.createWaitingChat(message: message, receiver: self.user) { (result) in
                 switch result {
                 case .success():
-                    UIApplication.shared.keyWindow?.rootViewController?.showAlert(with: "Успешно!", and: "ваше сообщение для \(self.user.username) было отправленно.")
+                    UIApplication.shared.keyWindow?.rootViewController?.showAlert(with: "Успешно!", and: "ваше сообщение для \(self.user.firstName) было отправленно.")
                 case .failure(let error):
                     UIApplication.shared.keyWindow?.rootViewController?.showAlert(with: "Ошибка!", and: error.localizedDescription)
                 }
             }
         }
     }
-    
+}
+
+// MARK: - Setup Constraint
+extension ProfileViewController {
     private func setupConstraint() {
         view.addSubview(imageView)
         view.addSubview(containerView)
@@ -91,7 +99,7 @@ class ProfileViewController: UIViewController {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         aboutMeLabel.translatesAutoresizingMaskIntoConstraints = false
         myTextField.translatesAutoresizingMaskIntoConstraints = false
-       
+
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

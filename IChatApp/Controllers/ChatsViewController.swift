@@ -10,8 +10,8 @@ import UIKit
 import MessageKit
 import InputBarAccessoryView
 import FirebaseFirestore
-//import Nuke
-//import NukeExtensions
+import Nuke
+import NukeExtensions
 
 class ChatsViewController: MessagesViewController {
 
@@ -37,6 +37,10 @@ class ChatsViewController: MessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+    }
+    
+    private func setupUI() {
         configureMessageInputBar()
         
         if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
@@ -46,7 +50,6 @@ class ChatsViewController: MessagesViewController {
             layout.photoMessageSizeCalculator.incomingAvatarSize = .zero
         }
         
-        messagesCollectionView.backgroundColor = .mainWhite()
         messageInputBar.delegate = self
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
@@ -93,40 +96,44 @@ class ChatsViewController: MessagesViewController {
     }
     
     func configureMessageInputBar() {
-        messageInputBar.isTranslucent = true
+        messagesCollectionView.backgroundColor = .clear
+        
+        messageInputBar.isTranslucent = false
         messageInputBar.separatorLine.isHidden = true
-        messageInputBar.backgroundView.backgroundColor = .mainWhite()
-        messageInputBar.inputTextView.backgroundColor = .white
-        messageInputBar.inputTextView.placeholderTextColor = #colorLiteral(red: 0.7411764706, green: 0.7411764706, blue: 0.7411764706, alpha: 1)
+        messageInputBar.backgroundView.backgroundColor = .navigationBarDark()
+        messageInputBar.inputTextView.backgroundColor = .clear
+        messageInputBar.inputTextView.placeholderTextColor = #colorLiteral(red: 0.608915627, green: 0.6034373641, blue: 0.6296523213, alpha: 1)
         messageInputBar.inputTextView.textContainerInset = UIEdgeInsets(top: 14, left: 30, bottom: 14, right: 36)
-        messageInputBar.inputTextView.placeholderLabelInsets = UIEdgeInsets(top: 14, left: 36, bottom: 14, right: 36)
-        messageInputBar.inputTextView.layer.borderColor = #colorLiteral(red: 0.7411764706, green: 0.7411764706, blue: 0.7411764706, alpha: 0.4033635232)
-        messageInputBar.inputTextView.layer.borderWidth = 0.2
+        messageInputBar.inputTextView.placeholderLabelInsets = UIEdgeInsets(top: 14, left: 14, bottom: 14, right: 36)
+        messageInputBar.inputTextView.layer.borderColor = #colorLiteral(red: 0.608915627, green: 0.6034373641, blue: 0.6296523213, alpha: 1)
+        messageInputBar.inputTextView.layer.borderWidth = 1
         messageInputBar.inputTextView.layer.cornerRadius = 18.0
         messageInputBar.inputTextView.layer.masksToBounds = true
         messageInputBar.inputTextView.scrollIndicatorInsets = UIEdgeInsets(top: 14, left: 0, bottom: 14, right: 0)
         
-        messageInputBar.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        messageInputBar.layer.shadowColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
         messageInputBar.layer.shadowRadius = 5
-        messageInputBar.layer.shadowOpacity = 0.3
-        messageInputBar.layer.shadowOffset = CGSize(width: 0, height: 4)
+        messageInputBar.layer.shadowOpacity = 0.5
+        messageInputBar.layer.shadowOffset = CGSize(width: 0, height: -4)
+        
+        view.applyViewGradient(cornerRadius: 0)
         
         configureSendButton()
         configureCameraIcon()
     }
     
     func configureSendButton() {
-        messageInputBar.sendButton.setImage(UIImage(named: "Sent"), for: .normal)
-        messageInputBar.sendButton.applyGradients(cornerRadius: 10)
+        messageInputBar.sendButton.setTitle("", for: .normal)
+        messageInputBar.sendButton.setImage(UIImage(systemName: "arrowshape.right"), for: .normal)
+        messageInputBar.sendButton.tintColor = #colorLiteral(red: 0.608915627, green: 0.6034373641, blue: 0.6296523213, alpha: 1)
         messageInputBar.setRightStackViewWidthConstant(to: 56, animated: false)
-//        messageInputBar.sendButton.contentEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 6, right: 30)
         messageInputBar.sendButton.setSize(CGSize(width: 48, height: 48), animated: false)
-        messageInputBar.middleContentViewPadding.right = -38
+        messageInputBar.middleContentViewPadding.right = -50
     }
     
     func configureCameraIcon() {
         let cameraItem = InputBarButtonItem(type: .system)
-        cameraItem.tintColor = #colorLiteral(red: 0.7882352941, green: 0.631372549, blue: 0.9411764706, alpha: 1)
+        cameraItem.tintColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
         let cameraImage = UIImage(systemName: "camera")
         cameraItem.image = cameraImage
         
@@ -170,6 +177,7 @@ class ChatsViewController: MessagesViewController {
     }
 }
 
+// MARK: - UINavigationControllerDelegate / UIImagePickerControllerDelegate
 extension ChatsViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true)
@@ -178,9 +186,10 @@ extension ChatsViewController: UINavigationControllerDelegate, UIImagePickerCont
     }
 }
 
+// MARK: - MessagesDataSource
 extension ChatsViewController: MessagesDataSource {
     func currentSender() -> MessageKit.SenderType {
-        return Sender(senderId: user.id, displayName: user.username)
+        return Sender(senderId: user.id, displayName: "\(user.firstName) \(user.secondName)")
     }
     
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) -> MessageKit.MessageType {
@@ -204,6 +213,7 @@ extension ChatsViewController: MessagesDataSource {
     }
 }
 
+// MARK: - MessagesLayoutDelegate
 extension ChatsViewController: MessagesLayoutDelegate {
     func footerViewSize(for section: Int, in messagesCollectionView: MessagesCollectionView) -> CGSize {
         return CGSize(width: 0, height: 8)
@@ -218,31 +228,29 @@ extension ChatsViewController: MessagesLayoutDelegate {
     }
 }
 
+// MARK: - MessagesDisplayDelegate
 extension ChatsViewController: MessagesDisplayDelegate {
     func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
-        return isFromCurrentSender(message: message) ? .white : #colorLiteral(red: 0.7882352941, green: 0.631372549, blue: 0.9411764706, alpha: 1)
+        return isFromCurrentSender(message: message) ? #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1) : #colorLiteral(red: 0.09668207914, green: 0.08987630159, blue: 0.1244768277, alpha: 1)
     }
     
     func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
-        return isFromCurrentSender(message: message) ? #colorLiteral(red: 0.2392156863, green: 0.2392156863, blue: 0.2392156863, alpha: 1) : .white
+        return .white
     }
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         avatarView.isHidden = true
-//        let url = URL(string: user.avatarStringURL)
-//        loadImage(with: Nuke.ImageRequest(url: url),
-//                  options: ImageLoadingOptions(placeholder: UIImage(),
-//                  transition: .fadeIn(duration: 0.5)),
-//                  into: avatarView, completion: nil)
     }
+    
+    
     
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         return .bubble
     }
 }
 
+// MARK: - InputBarAccessoryViewDelegate
 extension ChatsViewController: InputBarAccessoryViewDelegate {
-    
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         let message = MMessage(user: user, content: text)
         FirestoreService.shared.sendMessage(chat: chat, message: message) { (result) in
@@ -255,7 +263,7 @@ extension ChatsViewController: InputBarAccessoryViewDelegate {
         }
         
         inputBar.inputTextView.text = ""
-        inputBar.inputTextView.placeholder = "Aa"
+        inputBar.inputTextView.placeholder = "Message"
         inputBar.inputTextView.isEditable = true
     }
 }

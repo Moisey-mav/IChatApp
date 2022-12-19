@@ -41,13 +41,13 @@ struct MMessage: Hashable, MessageType {
     
     init(user: MUser, content: String) {
         self.content = content
-        sender = Sender(senderId: user.id, displayName: user.username)
+        sender = Sender(senderId: user.id, displayName: "\(user.firstName) \(user.secondName)")
         sentDate = Date()
         id = nil
     }
     
     init(user: MUser, image: UIImage) {
-        sender = Sender(senderId: user.id, displayName: user.username)
+        sender = Sender(senderId: user.id, displayName: "\(user.firstName) \(user.secondName)")
         self.image = image
         content = ""
         sentDate = Date()

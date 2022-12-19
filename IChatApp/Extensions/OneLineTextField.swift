@@ -13,11 +13,13 @@ class OneLineTextField: UITextField {
         self.init()
         self.font = font
         self.borderStyle = .none
+        self.textColor = .white
+        self.backgroundColor = .clear
         self.translatesAutoresizingMaskIntoConstraints = false
         
         var bottomView = UIView()
         bottomView = UIView.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        bottomView.backgroundColor = .textFieldLight()
+        bottomView.backgroundColor = .headerTextField()
         
         self.addSubview(bottomView)
         bottomView.translatesAutoresizingMaskIntoConstraints = false
