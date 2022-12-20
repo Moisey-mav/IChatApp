@@ -287,25 +287,3 @@ extension ListViewController: UISearchBarDelegate {
         reloadData(with: searchText)
     }
 }
-
-// MARK: - SwiftUI
-
-import SwiftUI
-
-struct ListViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let viewController = MainTabBarController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<ListViewControllerProvider.ContainerView>) -> UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: ListViewControllerProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<ListViewControllerProvider.ContainerView>) {
-            
-        }
-    }
-}

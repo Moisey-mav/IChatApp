@@ -11,7 +11,7 @@ import NukeExtensions
 
 class ChatRequestViewController: UIViewController {
     
-    private let containerView = UIView()
+    private let containerView = UIView(cornerRadius: 30, backgroundColor: .clear)
     private let imageView = UIImageView(image: UIImage(named: "human1"), contentMode: .scaleAspectFill)
     private let nameLabel = UILabel(text: "Peter Ben", font: .systemFont(ofSize: 20, weight: .light))
     private let aboutMeLabel = UILabel(text: "You have the opportunity to start a new chat", font: .systemFont(ofSize: 16, weight: .light))
@@ -42,25 +42,25 @@ class ChatRequestViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        acceptButton.applyButtonGradientBlue(cornerRadius: 10)
+        customizeElement()
     }
     
     private func setupUI() {
-        customizeElement()
         setupConstraint()
         setupButton()
     }
     
     private func customizeElement() {
-        containerView.layer.cornerRadius = 30
-        containerView.backgroundColor = .navigationBarDark()
         containerView.layer.shadowColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
         containerView.layer.shadowRadius = 4
         containerView.layer.shadowOpacity = 0.8
         containerView.layer.shadowOffset = CGSize(width: 0, height: -6)
+        containerView.applyViewGradient(cornerRadius: 30)
         
         denyButton.layer.borderWidth = 1.2
         denyButton.layer.borderColor = #colorLiteral(red: 0.8352941176, green: 0.2, blue: 0.2, alpha: 1)
+        
+        acceptButton.applyButtonGradientBlue(cornerRadius: 10)
     }
     
     private func setupButton() {

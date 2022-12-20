@@ -9,20 +9,9 @@ import UIKit
 
 class SignUpViewController: UIViewController {
     
-    private let containerView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 30
-        view.backgroundColor = .backgroundViewDark()
-        return view
-    }()
+    private let containerView = UIView(cornerRadius: 30, backgroundColor: .backgroundViewDark())
     
-    private let blurView: UIVisualEffectView = {
-        let view = UIVisualEffectView()
-        view.clipsToBounds = true
-        let blurEffect = UIBlurEffect(style: .dark)
-        view.effect = blurEffect
-        return view
-    }()
+    private let blurView = UIVisualEffectView(cornerRadius: 15, blurStyle: .dark)
     
     private let welcomeLabel = UILabel(text: "Good to see you!", font: .avenir26())
     private let emailLabel = UILabel(text: "Email")
@@ -31,8 +20,8 @@ class SignUpViewController: UIViewController {
     private let alreadyOnboardLabel = UILabel(text: "Already onboard?")
     
     private let emailTextField = OneLineTextField(font: .avenir20())
-    private let passwordTextField = OneLineTextField(font: .avenir20())
-    private let confirmPasswordTextField = OneLineTextField(font: .avenir20())
+    private let passwordTextField = OneLineTextField(font: .avenir20(), isSecure: true)
+    private let confirmPasswordTextField = OneLineTextField(font: .avenir20(), isSecure: true)
     
     private let signUpButton = UIButton(title: "Sing Up", titleColor: .white, backgroundColor: .clear, cornerRadius: 15)
     private let loginButton: UIButton = {

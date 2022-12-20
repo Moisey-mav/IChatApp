@@ -11,7 +11,7 @@ import NukeExtensions
 
 class ProfileViewController: UIViewController {
     
-    private let containerView = UIView()
+    private let containerView = UIView(cornerRadius: 30, backgroundColor: .clear)
     private let imageView = UIImageView(image: UIImage(named: "human1"), contentMode: .scaleAspectFill)
     private let nameLabel = UILabel(text: "Peter Ben", font: .systemFont(ofSize: 20, weight: .light))
     private let aboutMeLabel = UILabel(text: "You have the opportunity to chat with the best world!", font: .systemFont(ofSize: 16, weight: .light))
@@ -40,9 +40,13 @@ class ProfileViewController: UIViewController {
         setupUI()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        customizeElement()
+    }
+    
     private func setupUI() {
         configureView()
-        customizeElement()
         setupConstraint()
         setupButton()
     }
@@ -52,12 +56,11 @@ class ProfileViewController: UIViewController {
     }
     
     private func customizeElement() {
-        containerView.layer.cornerRadius = 30
-        containerView.backgroundColor = .navigationBarDark()
         containerView.layer.shadowColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
         containerView.layer.shadowRadius = 4
         containerView.layer.shadowOpacity = 0.8
         containerView.layer.shadowOffset = CGSize(width: 0, height: -6)
+        containerView.applyViewGradient(cornerRadius: 30)
         
         aboutMeLabel.numberOfLines = 0
         myTextField.borderStyle = .roundedRect

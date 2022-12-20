@@ -12,6 +12,10 @@ import NukeExtensions
 
 class ProfileSettingsViewController: UIViewController {
     
+    private let containerView = UIView(cornerRadius: 30, backgroundColor: .backgroundViewDark())
+    
+    private let blurView = UIVisualEffectView(cornerRadius: 15, blurStyle: .dark)
+    
     private var fullImageView = ProfilePhotoView()
     private let userNameLabel = UILabel(text: "User Name")
     private let loginOutButton = UIButton(title: "Login out", font: .laoSangamMN20(), titleColor: #colorLiteral(red: 0.8352941176, green: 0.2, blue: 0.2, alpha: 1), backgroundColor: .clear, cornerRadius: 10)
@@ -22,16 +26,6 @@ class ProfileSettingsViewController: UIViewController {
         tabel.separatorColor = .white
         tabel.isScrollEnabled = false
         return tabel
-    }()
-    
-    private let containerView = UIView()
-    
-    private let blurView: UIVisualEffectView = {
-        let view = UIVisualEffectView()
-        view.clipsToBounds = true
-        let blurEffect = UIBlurEffect(style: .dark)
-        view.effect = blurEffect
-        return view
     }()
     
     var models = [TableSection]()
@@ -65,8 +59,6 @@ class ProfileSettingsViewController: UIViewController {
     }
     
     private func customizeElement() {
-        containerView.layer.cornerRadius = 30
-        containerView.backgroundColor = .navigationBarDark()
         containerView.layer.shadowColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
         containerView.layer.shadowRadius = 4
         containerView.layer.shadowOpacity = 0.8
@@ -124,7 +116,6 @@ class ProfileSettingsViewController: UIViewController {
 
 // MARK: - Setup Constraint
 extension ProfileSettingsViewController {
-    
     private func setupConstraint() {
         let stackView = UIStackView(arrangedSubvews: [fullImageView, userNameLabel], axis: .vertical, spacing: 10)
         
@@ -197,7 +188,6 @@ extension ProfileSettingsViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension ProfileSettingsViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }

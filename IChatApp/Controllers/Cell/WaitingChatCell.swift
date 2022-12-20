@@ -55,7 +55,7 @@ class WaitingChatCell: UICollectionViewCell, SelfConfigureCell {
     }
 }
 
-// MARK: - Setup Constraint
+// MARK: - Setup Constraints
 extension WaitingChatCell {
     private func setupConstraint() {
         addSubview(friendImageView)
@@ -75,28 +75,5 @@ extension WaitingChatCell {
             userName.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
             userName.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
-    }
-}
-
-// MARK: - SwiftUI
-
-import SwiftUI
-import NukeExtensions
-
-struct WaitingChatProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let viewController = MainTabBarController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<WaitingChatProvider.ContainerView>) -> UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: WaitingChatProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<WaitingChatProvider.ContainerView>) {
-            
-        }
     }
 }

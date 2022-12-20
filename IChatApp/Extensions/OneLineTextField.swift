@@ -9,8 +9,9 @@ import UIKit
 
 class OneLineTextField: UITextField {
     
-    convenience init(font: UIFont? = .avenir20()) {
+    convenience init(font: UIFont? = .avenir20(), isSecure: Bool = false) {
         self.init()
+        self.isSecureTextEntry = isSecure
         self.font = font
         self.borderStyle = .none
         self.textColor = .white

@@ -6,18 +6,10 @@
 //
 
 import UIKit
-import GoogleSignIn
 
 class AuthViewController: UIViewController {
     
-    private let blurView: UIVisualEffectView = {
-        let view = UIVisualEffectView()
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 15
-        let blurEffect = UIBlurEffect(style: .dark)
-        view.effect = blurEffect
-        return view
-    }()
+    private let blurView = UIVisualEffectView(cornerRadius: 15, blurStyle: .dark)
     
     private let logoImageView = UIImageView(image: UIImage(named: "AppLogo"), contentMode: .scaleAspectFit)
     
@@ -73,9 +65,8 @@ class AuthViewController: UIViewController {
     }
 }
 
-// MARK: - Setup Constraint
+// MARK: - Setup Constraints
 extension AuthViewController {
-    
     private func setupConstraints() {
         let emailView = ButtonFromView(label: emailLabel, button: emailButton)
         let loginView = ButtonFromView(label: loginLabel, button: loginButton)
@@ -117,27 +108,5 @@ extension AuthViewController: AuthNavigationDelegate {
     
     func toSignUpVC() {
         present(signUpVC, animated: true)
-    }
-}
-
-// MARK: - SwiftUI
-
-import SwiftUI
-
-struct AuthViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let viewController = AuthViewController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<AuthViewControllerProvider.ContainerView>) -> UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: AuthViewControllerProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<AuthViewControllerProvider.ContainerView>) {
-            
-        }
     }
 }

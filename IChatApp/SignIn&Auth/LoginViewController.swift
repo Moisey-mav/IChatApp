@@ -9,19 +9,9 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
-    private let containerView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 30
-        return view
-    }()
+    private let containerView = UIView(cornerRadius: 30, backgroundColor: .clear)
     
-    private let blurView: UIVisualEffectView = {
-        let view = UIVisualEffectView()
-        view.clipsToBounds = true
-        let blurEffect = UIBlurEffect(style: .dark)
-        view.effect = blurEffect
-        return view
-    }()
+    private let blurView = UIVisualEffectView(cornerRadius: 15, blurStyle: .dark)
     
     private let welcomeLabel = UILabel(text: "Welcom back!", font: .avenir26())
     private let emailLabel = UILabel(text: "Email")
@@ -29,7 +19,7 @@ class LoginViewController: UIViewController {
     private let needAnAccountLabel = UILabel(text: "Need an account?")
 
     private let emailTextField = OneLineTextField(font: .avenir20())
-    private let passwordTextField = OneLineTextField(font: .avenir20())
+    private let passwordTextField = OneLineTextField(font: .avenir20(), isSecure: true)
     
     private let googleButton = UIButton(title: "Login with Google", font: .avenir15(), titleColor: .white, backgroundColor: .white)
     private let loginButton = UIButton(title: "Login", titleColor: .white, backgroundColor: .buttonDark())
@@ -56,7 +46,6 @@ class LoginViewController: UIViewController {
     
     private func setupUI() {
         setupConstraint()
-        setCustom()
         customizeElement()
         setupButton()
     }
@@ -70,16 +59,11 @@ class LoginViewController: UIViewController {
         
         containerView.applyViewGradient(cornerRadius: 30)
         loginButton.applyButtonGradientBlue(cornerRadius: 15)
-        googleButton.applyGoogleButtonGradient(cornerRadius: 15)
         
         emailLabel.textColor = .headerTextField()
         passwordLabel.textColor = .headerTextField()
         needAnAccountLabel.textColor = .headerTextField()
         welcomeLabel.textColor = .white
-    }
-    
-    private func setCustom() {
-        googleButton.customizeGoogleButton()
     }
     
     private func setupButton() {
@@ -122,14 +106,11 @@ class LoginViewController: UIViewController {
 extension LoginViewController {
     
     private func setupConstraint() {
-        let loginWithView = ButtonFromView(label: UILabel(), button: googleButton)
         let emailStackView = UIStackView(arrangedSubvews: [emailLabel, emailTextField], axis: .vertical, spacing: 5)
         let passwordStackView = UIStackView(arrangedSubvews: [passwordLabel, passwordTextField], axis: .vertical, spacing: 5)
         
         loginButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        let stackView = UIStackView(arrangedSubvews: [emailStackView, passwordStackView, loginButton, googleButton], axis: .vertical, spacing: 40)
-        
-        let googleStackView = UIStackView(arrangedSubvews: [loginWithView], axis: .vertical, spacing: 10)
+        let stackView = UIStackView(arrangedSubvews: [emailStackView, passwordStackView, loginButton], axis: .vertical, spacing: 40)
       
         let bottomStackView = UIStackView(arrangedSubvews: [needAnAccountLabel, signUpButton], axis: .horizontal, spacing: 10)
         bottomStackView.alignment = .firstBaseline
@@ -166,19 +147,11 @@ extension LoginViewController {
             stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 40),
             stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -40)
         ])
-
-        containerView.addSubview(googleStackView)
-        googleStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            googleStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
-            googleStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 40),
-            googleStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -40)
-        ])
         
         containerView.addSubview(bottomStackView)
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            bottomStackView.topAnchor.constraint(equalTo: googleStackView.bottomAnchor, constant: 20),
+            bottomStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
             bottomStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 40),
             bottomStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -40)
         ])

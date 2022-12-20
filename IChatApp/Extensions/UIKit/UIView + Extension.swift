@@ -9,6 +9,12 @@ import UIKit
 
 extension UIView {
     
+    convenience init(cornerRadius: CGFloat, backgroundColor: UIColor) {
+        self.init()
+        self.layer.cornerRadius = cornerRadius
+        self.backgroundColor = backgroundColor
+    }
+    
     func applyButtonGradientBlue(cornerRadius: CGFloat) {
         self.backgroundColor = nil
         self.layoutIfNeeded()

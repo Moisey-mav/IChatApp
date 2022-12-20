@@ -24,8 +24,25 @@ class ProfileSettingsCell: UITableViewCell {
         setupConstraints()
     }
     
-    private func setupConstraints() {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        iconImageView.image = nil
+        informLabel.text = nil
+    }
+    
+    public func configureSettingCell(with: StaticCellOptions) {
+        iconImageView.image = with.icon
+        informLabel.text = with.content
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
+// MARK: - Setup Constraints
+extension ProfileSettingsCell {
+    private func setupConstraints() {
         contentView.addSubview(iconImageView)
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -42,20 +59,5 @@ class ProfileSettingsCell: UITableViewCell {
             informLabel.leftAnchor.constraint(equalTo: iconImageView.rightAnchor, constant: 10)
             
         ])
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        iconImageView.image = nil
-        informLabel.text = nil
-    }
-    
-    public func configureSettingCell(with: StaticCellOptions) {
-        iconImageView.image = with.icon
-        informLabel.text = with.content
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

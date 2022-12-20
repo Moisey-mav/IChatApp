@@ -88,25 +88,3 @@ extension ActiveChatCell {
         ])
     }
 }
-
-// MARK: - SwiftUI
-
-import SwiftUI
-
-struct ActiveChatProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let viewController = MainTabBarController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<ActiveChatProvider.ContainerView>) -> UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: ActiveChatProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<ActiveChatProvider.ContainerView>) {
-            
-        }
-    }
-}

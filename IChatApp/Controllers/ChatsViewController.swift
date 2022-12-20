@@ -97,7 +97,7 @@ class ChatsViewController: MessagesViewController {
     
     func configureMessageInputBar() {
         messagesCollectionView.backgroundColor = .clear
-        
+    
         messageInputBar.isTranslucent = false
         messageInputBar.separatorLine.isHidden = true
         messageInputBar.backgroundView.backgroundColor = .navigationBarDark()
@@ -241,8 +241,6 @@ extension ChatsViewController: MessagesDisplayDelegate {
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         avatarView.isHidden = true
     }
-    
-    
     
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         return .bubble

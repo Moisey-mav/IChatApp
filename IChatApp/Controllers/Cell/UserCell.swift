@@ -59,7 +59,7 @@ class UserCell: UICollectionViewCell, SelfConfigureCell {
     }
 }
 
-// MARK: - Setup Constraint
+// MARK: - Setup Constraints
 extension UserCell {
     private func setupConstraint() {
         addSubview(containerView)
@@ -88,27 +88,5 @@ extension UserCell {
             userName.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
             userName.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
-    }
-}
-
-// MARK: - SwiftUI
-
-import SwiftUI
-
-struct UserProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let viewController = MainTabBarController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<UserProvider.ContainerView>) -> UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: UserProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<UserProvider.ContainerView>) {
-            
-        }
     }
 }

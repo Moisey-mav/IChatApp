@@ -208,25 +208,3 @@ extension PeopleViewController: UISearchBarDelegate {
         reloadData(with: searchText)
     }
 }
-
-// MARK: - SwiftUI
-
-import SwiftUI
-
-struct PeopleViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView()
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        let viewController = MainTabBarController()
-        
-        func makeUIViewController(context: UIViewControllerRepresentableContext<PeopleViewControllerProvider.ContainerView>) -> UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: PeopleViewControllerProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<PeopleViewControllerProvider.ContainerView>) {
-            
-        }
-    }
-}

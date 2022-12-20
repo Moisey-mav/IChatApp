@@ -11,20 +11,9 @@ import FirebaseAuth
 
 class SetupProfileViewController: UIViewController {
     
-    private let containerView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 30
-        view.backgroundColor = .backgroundViewDark()
-        return view
-    }()
+    private let containerView = UIView(cornerRadius: 30, backgroundColor: .backgroundViewDark())
     
-    private let blurView: UIVisualEffectView = {
-        let view = UIVisualEffectView()
-        view.clipsToBounds = true
-        let blurEffect = UIBlurEffect(style: .dark)
-        view.effect = blurEffect
-        return view
-    }()
+    private let blurView = UIVisualEffectView(cornerRadius: 15, blurStyle: .dark)
     
     private let welcomeLabel = UILabel(text: "Set up profile!", font: .avenir26())
     private let firstNameLabel = UILabel(text: "First name *")
@@ -59,7 +48,7 @@ class SetupProfileViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        setColorObject()
+        customizeElement()
     }
     
     private func setupUI() {
@@ -67,14 +56,14 @@ class SetupProfileViewController: UIViewController {
         setupButton()
     }
     
-    private func setColorObject() {
+    private func customizeElement() {
         containerView.layer.cornerRadius = 30
         containerView.layer.shadowColor = #colorLiteral(red: 0.2418880761, green: 0.4674277306, blue: 0.9161326885, alpha: 1)
         containerView.layer.shadowRadius = 4
         containerView.layer.shadowOpacity = 0.8
         containerView.layer.shadowOffset = CGSize(width: 0, height: -6)
-        
         containerView.applyViewGradient(cornerRadius: 30)
+        
         goToChatsButton.applyButtonGradientBlue(cornerRadius: 15)
         view.applyViewGradient(cornerRadius: 0)
         
@@ -82,8 +71,6 @@ class SetupProfileViewController: UIViewController {
         secondNameLabel.textColor = .headerTextField()
         aboutMeLabel.textColor = .headerTextField()
         sexLabel.textColor = .headerTextField()
-        
-
     }
     
     private func setupButton() {
@@ -115,10 +102,8 @@ class SetupProfileViewController: UIViewController {
     }
 }
 
-// MARK: - Setup Constraint
-
+// MARK: - Setup Constraints
 extension SetupProfileViewController {
-    
     private func setupConstraints() {
         let firstNameStackView = UIStackView(arrangedSubvews: [firstNameLabel, firstNameTextField], axis: .vertical, spacing: 0)
         let secondNameStackView = UIStackView(arrangedSubvews: [secondNameLabel, secondNameTextField], axis: .vertical, spacing: 0)
